@@ -18,12 +18,14 @@ export async function getAllUsers(graffiti, graffitiSession) {
 
     const users = [];
     for await (const entry of asyncGenerator) {
+        const randomPicture = randomAnimal();
+
         users.push({
             name: entry.object.value.name,
             pronouns: entry.object.value.pronouns,
             id: entry.object.value.id,
             actor: entry.object.value.actor,
-            picture: entry.object.value.picture ?? randomAnimal(),
+            picture: entry.object.value.picture ?? randomPicture,
             bio: entry.object.value.bio ?? "",
             url: entry.object.url,
         });
