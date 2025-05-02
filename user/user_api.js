@@ -23,7 +23,7 @@ export async function getAllUsers(graffiti, graffitiSession) {
             pronouns: entry.object.value.pronouns,
             id: entry.object.value.id,
             actor: entry.object.value.actor,
-            picture: entry.object.value.picture ?? "",
+            picture: entry.object.value.picture ?? randomAnimal(),
             bio: entry.object.value.bio ?? "",
             url: entry.object.url,
         });
@@ -42,7 +42,7 @@ export async function createUser(graffiti, graffitiSession) {
                 generator: "https://carolinamoura.github.io/",
                 id: crypto.randomUUID(),
                 actor: graffitiSession.value.actor,
-                picture: ANIMALS[randomInteger(0, ANIMALS.length - 1)],
+                picture: randomAnimal(),
                 bio: "",
             },
             channels: USER_CHANNEL
@@ -82,4 +82,8 @@ function formatNameFromActor(actor) {
  */
 function randomInteger(L, R) {
     return Math.floor(Math.random() * (R - L + 1)) + L;
+}
+
+function randomAnimal() {
+    return ANIMALS[randomInteger(0, ANIMALS.length - 1)];
 }

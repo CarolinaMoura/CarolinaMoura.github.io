@@ -84,15 +84,16 @@ createApp({
 
     async getFriends() {
       await this.getAllUsers();
-      this.friends = [];
+      const friends = [];
       for (const user of this.allUsers) {
         const msgs = await this.getMessages(user.id);
         if (msgs.length > 0) {
-          this.friends.push({ ...user, lastMsg: msgs[0] });
+          friends.push({ ...user, lastMsg: msgs[0] });
         }
       }
 
-      this.friends.sort((a, b) => b.lastMsg.published - a.lastMsg.published);
+      friends.sort((a, b) => b.lastMsg.published - a.lastMsg.published);
+      return friends;
     },
 
     async changeConversation(friend) {
@@ -227,12 +228,31 @@ createApp({
       await this.getAllUsers();
       console.log(this.allUsers);
       // console.log(this.allUsers);
-      await this.getFriends();
+      this.friends = await this.getFriends();
       // this.isLoading = false;
       // unwatch();
-
     });
+    // this._friendsPoller = setInterval(async () => {
+    //   if (this.$graffitiSession.value) {
+    //     const pseudoFriends = await this.getFriends();
+    //     if (pseudoFriends.length !== this.friends.length) {
+    //       this.friends = pseudoFriends;
+    //       return;
+    //     }
+    //     for (const [friend1, ix1] of pseudoFriends.entries()) {
+    //       const friend2 = this.friends[ix1];
+    //       if (friend1.id === friend2.id && friend1.lastMsg === friend2.lastMsg) continue;
+    //       this.friends = pseudoFriends;
+    //       return;
+    //     }
+    //   }
+    // }, 10_000);
   },
+
+  beforeUnmount() {
+    // clearInterval(this._friendsPoller);
+  },
+
   components: {
     Profile: defineAsyncComponent(Profile),
     Name: defineAsyncComponent(Name)
