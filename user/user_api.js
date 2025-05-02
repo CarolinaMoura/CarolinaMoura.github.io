@@ -45,7 +45,7 @@ export async function createUser(graffiti, graffitiSession) {
                 picture: ANIMALS[randomInteger(0, ANIMALS.length - 1)],
                 bio: "",
             },
-            channels: [USER_CHANNEL, "designftw-2025-studio1"]
+            channels: [USER_CHANNEL, "designftw-2025-studio2"]
         },
         graffitiSession.value,
     );
