@@ -1,0 +1,8 @@
+<div class="name_container" @click="$emit('click')">
+
+    <img :src="`./img/${picture}.png`" alt="User Image" />
+    <div class="name_and_text">
+        <h2>{{trim(name, 15)}}</h2>
+        <p v-if="content">{{trim(content, 20)}}</p>
+    </div>
+</div>
