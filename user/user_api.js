@@ -38,12 +38,14 @@ export async function createUser(graffiti, graffitiSession) {
             value: {
                 name: formatNameFromActor(graffitiSession.value.actor),
                 pronouns: ["they", "them"],
+                describes: graffitiSession.value.actor,
+                generator: "https://carolinamoura.github.io/",
                 id: crypto.randomUUID(),
                 actor: graffitiSession.value.actor,
                 picture: ANIMALS[randomInteger(0, ANIMALS.length - 1)],
                 bio: "",
             },
-            channels: [USER_CHANNEL]
+            channels: [USER_CHANNEL, "designftw-2025-studio1"]
         },
         graffitiSession.value,
     );

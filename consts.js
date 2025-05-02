@@ -1,2 +1,2 @@
-export const USER_CHANNEL = 'e8a990d6-245a-4fc4-b44d-8d4b029d4f43';
+export const USER_CHANNEL = 'd3a608d2-f48d-42ab-ae8d-9a104ee4cad7';
 export const ANIMALS = ["cat", "chicken", "panda", "rabbit", "koala", "sea-lion", "giraffe", "puffer-fish", "penguin", "sloth", "dragon", "dog", "hen", "weasel"];
