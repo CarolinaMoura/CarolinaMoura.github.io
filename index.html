@@ -91,7 +91,7 @@
                             </Name>
                         </div>
 
-                        <graffiti-discover v-slot="{ objects: messageObjects, isInitialPolling }"
+                        <graffiti-discover autopoll v-slot="{ objects: messageObjects, isInitialPolling }"
                             :channels="getChannel()" @updated="onMessagesUpdated" :schema="{
                             properties: {
                                 value: {
