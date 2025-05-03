@@ -1,4 +1,6 @@
 export const IMessage = {
     content: { type: 'string' },
-    published: { type: 'number' }
+    published: { type: 'number' },
+    senderId: { type: 'string' },
+    receiverId: { type: 'string' }
 }

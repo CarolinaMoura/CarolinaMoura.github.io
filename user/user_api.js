@@ -18,12 +18,9 @@ export async function getAllUsers(graffiti, graffitiSession, channel = USER_CHAN
 
     const users = [];
     for await (const entry of asyncGenerator) {
-        console.log("entrei");
         const randomPicture = randomAnimal();
 
         const data = entry.object.value;
-        console.log(data);
-
         users.push({
             name: data.name,
             pronouns: data.pronouns,
@@ -35,12 +32,8 @@ export async function getAllUsers(graffiti, graffitiSession, channel = USER_CHAN
             url: entry.object.url,
         });
 
-        console.log("passei", channel);
     };
 
-    console.log("passei aq, com ", users);
-
-    console.log(users);
 
     return users;
 }
@@ -98,6 +91,5 @@ function randomInteger(L, R) {
 }
 
 function randomAnimal() {
-    console.log("entrando");
     return ANIMALS[randomInteger(0, ANIMALS.length - 1)];
 }

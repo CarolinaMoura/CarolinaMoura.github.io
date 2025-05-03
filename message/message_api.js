@@ -8,7 +8,6 @@ import { IMessage } from "./IMessage.js";
  * @param userId 
  */
 export async function getMessages(graffiti, graffitiSession, userId) {
-    console.log("entrei");
     const messageAsync = await graffiti.discover(
         [userId],
         {
@@ -17,5 +16,22 @@ export async function getMessages(graffiti, graffitiSession, userId) {
         graffitiSession
     );
 
-    console.log(messageAsync);
+    const messages = [];
+    for await (const msgWrapper of messageAsync) {
+        const msg = msgWrapper.object.value;
+        messages.push(msg);
+    }
+
+    return messages;
+}
+
+export async function sendMessage(graffiti, graffitiSession, msgObject) {
+    await graffiti.put(
+        {
+            value: msgObject,
+            channels: [`${msgObject.senderId}:${msgObject.receiverId}`, `${msgObject.receiverId}:${msgObject.senderId}`,
+            `${msgObject.senderId}`, `${msgObject.receiverId}`]
+        },
+        graffitiSession.value,
+    );
 }
