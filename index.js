@@ -8,8 +8,8 @@ import User from "./User.js";
 import { createUser, getAllUsers, getUser } from "./user/user_api.js";
 import { Profile } from "./components/profile/profile.js";
 import { Name } from "./components/name/name.js";
+import { getMessages } from "./message/message_api.js";
 
-const ALL_USERS_CHANNEL = "c61fb232-2dd8-41cf-99f2-8f2c287db9ac";
 
 function $$(selector) {
   return Array.from(document.querySelectorAll(selector));
@@ -34,7 +34,7 @@ createApp({
       username: "",
       channels: ["designftw"],
       userImage: "img/bird.png",
-      user: new User(),
+      user: undefined,
       isLoading: false,
       newChat: false,
       allUsers: [],
@@ -67,6 +67,7 @@ createApp({
     logout() {
       this.currentConversation = undefined;
       this.currentConversationMessages = [];
+      this.user = undefined;
       this.friends = [];
       this.$graffiti.logout(this.$graffitiSession.value);
     },
@@ -134,7 +135,7 @@ createApp({
 
     /**
      * 
-     * @param {*} friend_id 
+     * @param friend_id 
      * @returns messages sorted from newest (0) to oldest (last index).
      */
     async getMessages(friend_id) {
@@ -170,7 +171,7 @@ createApp({
             content: this.myMessage,
             published: Date.now(),
           },
-          channels: [`${this.user.id}:${this.currentConversation.id}`, `${this.currentConversation.id}:${this.user.id}`]
+          channels: [`${this.user.id}:${this.currentConversation.id}`, `${this.currentConversation.id}:${this.user.id}`, `${this.user.id}`, `${this.currentConversation.id}`]
         },
         this.$graffitiSession.value,
       );
@@ -223,30 +224,18 @@ createApp({
       this.isLoading = true;
 
       await this.login();
-      this.isLoading = false;
-
-      await this.getAllUsers();
-      console.log(this.allUsers);
+      // await this.getAllUsers();
       // console.log(this.allUsers);
-      this.friends = await this.getFriends();
+      // console.log(this.allUsers);
+      // this.friends = await this.getFriends();
       // this.isLoading = false;
       // unwatch();
     });
-    // this._friendsPoller = setInterval(async () => {
-    //   if (this.$graffitiSession.value) {
-    //     const pseudoFriends = await this.getFriends();
-    //     if (pseudoFriends.length !== this.friends.length) {
-    //       this.friends = pseudoFriends;
-    //       return;
-    //     }
-    //     for (const [friend1, ix1] of pseudoFriends.entries()) {
-    //       const friend2 = this.friends[ix1];
-    //       if (friend1.id === friend2.id && friend1.lastMsg === friend2.lastMsg) continue;
-    //       this.friends = pseudoFriends;
-    //       return;
-    //     }
-    //   }
-    // }, 10_000);
+
+    // this._messagePoller = setInterval(async () => {
+    //   if (!this.user.id) return;
+    //   const allMessages = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
+    // }, 1000);
   },
 
   beforeUnmount() {

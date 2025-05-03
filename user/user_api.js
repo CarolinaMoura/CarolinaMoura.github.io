@@ -1,8 +1,8 @@
 import { USER_CHANNEL, ANIMALS } from "../consts.js";
 
-export async function getAllUsers(graffiti, graffitiSession) {
+export async function getAllUsers(graffiti, graffitiSession, channel = USER_CHANNEL) {
     const asyncGenerator = await graffiti.discover(
-        USER_CHANNEL,
+        channel,
         {
             properties: {
                 name: { type: 'string' },
@@ -18,18 +18,29 @@ export async function getAllUsers(graffiti, graffitiSession) {
 
     const users = [];
     for await (const entry of asyncGenerator) {
+        console.log("entrei");
         const randomPicture = randomAnimal();
 
+        const data = entry.object.value;
+        console.log(data);
+
         users.push({
-            name: entry.object.value.name,
-            pronouns: entry.object.value.pronouns,
-            id: entry.object.value.id,
-            actor: entry.object.value.actor,
-            picture: entry.object.value.picture ?? randomPicture,
-            bio: entry.object.value.bio ?? "",
+            name: data.name,
+            pronouns: data.pronouns,
+            id: data.id,
+            actor: data.actor,
+            generator: data.generator,
+            picture: data.picture ?? randomPicture,
+            bio: data.bio ?? "",
             url: entry.object.url,
         });
+
+        console.log("passei", channel);
     };
+
+    console.log("passei aq, com ", users);
+
+    console.log(users);
 
     return users;
 }
@@ -87,5 +98,6 @@ function randomInteger(L, R) {
 }
 
 function randomAnimal() {
+    console.log("entrando");
     return ANIMALS[randomInteger(0, ANIMALS.length - 1)];
 }
