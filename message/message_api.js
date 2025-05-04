@@ -13,7 +13,7 @@ export async function getMessages(graffiti, graffitiSession, userId) {
         {
             properties: IMessage
         },
-        graffitiSession
+        graffitiSession.value
     );
 
     const messages = [];
