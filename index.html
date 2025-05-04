@@ -64,15 +64,15 @@
                             </button>
                         </div>
                     </div>
-                    <ul id="chats">
-                        <li v-for="friend in friends">
+                    <transition-group name="chat" tag="ul" id="chats" class="chat-list">
+                        <li v-for="friend in friends" :key="friend.id" class="chat-item">
                             <button @click="changeConversation(friend)"
                                 :class="{active_chat: currentConversation && currentConversation.id === friend.id}">
                                 <Name :name="friend.name" :content="friend.lastMsg.content" :picture="friend.picture"
                                     @click="changeConversation(friend)"></Name>
                             </button>
                         </li>
-                    </ul>
+                    </transition-group>
                 </div>
                 <div id="chat">
                     <div v-if="currentConversation" id="actual_chat">
@@ -95,7 +95,6 @@
                             }
                         }">
                             <ul id="messages" v-scroll-bottom>
-                                <li v-if="isInitialPolling">Loading...</li>
                                 <li v-for="object in messageObjects.sort((a,b)=>a.value.published-b.value.published)"
                                     :key="object.url" class="message-bubble"
                                     :class="{ my_message: object.actor === $graffitiSession.value.actor }"

@@ -43,7 +43,7 @@ createApp({
       currentConversationMessages: [],
       hoveredMsg: null,
       openMenuMsg: null,
-      prevMessageSize: -1,
+      allMessages: undefined,
     };
   },
 
@@ -82,7 +82,7 @@ createApp({
       this.currentConversationMessages = [];
       this.user = undefined;
       this.friends = [];
-      this.prevMessageSize = -1;
+      this.allMessages = undefined;
       this.$graffiti.logout(this.$graffitiSession.value);
     },
 
@@ -128,12 +128,9 @@ createApp({
     },
 
     async changeConversation(friend) {
-      this.isLoading = true;
       this.currentConversation = friend;
-      this.currentConversationMessages = await this.getMessages(this.currentConversation.id);
+      this.currentConversationMessages = this.getMessages(this.currentConversation.id);
       $$("#message_input")[0].focus();
-
-      this.isLoading = false;
     },
 
     trim(lastText) {
@@ -166,27 +163,12 @@ createApp({
 
     /**
      * 
-     * @param friend_id 
+     * @param friendId
      * @returns messages sorted from newest (0) to oldest (last index).
      */
-    async getMessages(friend_id) {
-      const messageAsyncGenerator = this.$graffiti.discover(
-        [`${this.user.id}:${friend_id}`],
-        {
-          properties: {
-            content: { type: "string" },
-            published: { type: "number" },
-          },
-        }
-      );
-
-      const ret = [];
-      for await (const entry of messageAsyncGenerator) {
-        ret.push({
-          content: entry.object.value.content,
-          published: entry.object.value.published,
-        });
-      }
+    async getMessages(friendId) {
+      const ourIds = new Set([friendId, this.user.id]);
+      const ret = this.allMessages.filter((msg) => ourIds.has(msg.senderId) && ourIds.has(msg.receiverId));
       return ret.sort((msg1, msg2) => msg2.published - msg1.published);
     },
 
@@ -259,11 +241,11 @@ createApp({
 
     this._messagePoller = setInterval(async () => {
       if (!this.user) return;
-      const allMessages = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
-      if (allMessages.length !== this.prevMessageSize) {
+      const newAllMessages = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
+      if (!this.allMessages || newAllMessages.length !== this.allMessages.length) {
         this.friends = await this.getFriends();
-        this.prevMessageSize = allMessages.length;
       }
+      this.allMessages = newAllMessages;
     }, 1000);
   },
 
