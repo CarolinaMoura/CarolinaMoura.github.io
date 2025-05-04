@@ -130,6 +130,7 @@ createApp({
     async changeConversation(friend) {
       this.currentConversation = friend;
       this.currentConversationMessages = this.getMessages(this.currentConversation.id);
+      await this.$nextTick();
       $$("#message_input")[0].focus();
     },
 

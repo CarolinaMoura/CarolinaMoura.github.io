@@ -275,6 +275,10 @@ fieldset {
     background-color: rgb(0, 0, 0, 0.2);
 }
 
+#chats button:hover:not(.active_chat) {
+    background-color: rgb(0, 0, 0, 0.1)
+}
+
 #chat {
     margin: auto;
     text-align: center;
