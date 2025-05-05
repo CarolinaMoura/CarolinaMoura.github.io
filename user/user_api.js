@@ -63,6 +63,11 @@ export async function getUser(graffiti, graffitiSession) {
     return allUsers.find((user) => user.actor === graffitiSession.value.actor);
 }
 
+export async function getUserById(graffiti, graffitiSession, userId) {
+    const allUsers = await getAllUsers(graffiti, graffitiSession);
+    return allUsers.find((user) => user.id === userId);
+}
+
 export async function updateUser(graffiti, graffitiSession, patchValue, url) {
     await graffiti.patch(
         {

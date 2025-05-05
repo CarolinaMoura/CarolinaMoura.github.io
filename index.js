@@ -4,7 +4,6 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import { GraffitiRemote } from "@graffiti-garden/implementation-remote";
 import { defineAsyncComponent } from "vue";
 import { GraffitiPlugin } from "@graffiti-garden/wrapper-vue";
-import User from "./User.js";
 import { createUser, getAllUsers, getUser } from "./user/user_api.js";
 import { Profile } from "./components/profile/profile.js";
 import { Name } from "./components/name/name.js";
@@ -15,14 +14,14 @@ function $$(selector) {
   return Array.from(document.querySelectorAll(selector));
 }
 
-// const router = createRouter({
-//   history: createWebHashHistory(),
-//   routes: [
-//     { path: "/profile/:profileId", component: Profile, props: true},
-//     // { path: "/chat/:chatId", component: Chat, props: true },
-//     // { path: "/profile/:profileId", component: Profile, props: true },
-//   ],
-// });
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes: [
+    { path: "/profile/:profileId", component: Profile, props: true },
+    // { path: "/chat/:chatId", component: Chat, props: true },
+    // { path: "/profile/:profileId", component: Profile, props: true },
+  ],
+});
 
 createApp({
   data() {
@@ -236,6 +235,7 @@ createApp({
 
       await this.login();
       await this.getAllUsers();
+      console.log(this.user);
       this.friends = await this.getFriends();
       this.isLoading = false;
     });
@@ -269,5 +269,5 @@ createApp({
     updated(el) {
       el.scrollTop = el.scrollHeight;
     }
-  })
+  }).use(router)
   .mount("#app");

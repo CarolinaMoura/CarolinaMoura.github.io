@@ -17,7 +17,7 @@
             }
         </script>
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="profile.css" />
+    <link rel="stylesheet" href="./components/profile/profile.css" />
 </head>
 
 <body>
@@ -49,12 +49,18 @@
         </div>
         <template v-if="$graffitiSession.value">
 
+            <router-view></router-view>
+
             <Profile v-if="profiling" @toggle="updateProfile"></Profile>
             <div id="nonloader">
                 <div v-if="$graffitiSession.value" id="inbox">
                     <div id="navbar">
-                        <Name :name="user.name" :content="" :picture="user.picture" @click="() => {profiling = true}">
-                        </Name>
+                        <div id="user">
+                            <router-link :to="'/profile/' + this.user.id"><img :src="`img/${user.picture}.png`"
+                                    alt="User Image" />
+                                <h2>{{$graffitiSession.value.actor}}</h2>
+                            </router-link>
+                        </div>
                         <div id="navbar_buttons">
                             <button id="new_chat" @click="() => {newChat=true}">
                                 <img src="svg/new_chat.svg" />
@@ -105,14 +111,14 @@
                                         <span class="message_hour">{{getHour(object.value.published)}}</span>
                                     </div>
 
-                                    <!-- <button v-if="hoveredMsg === object.url" class="options-btn"
+                                    <button v-if="hoveredMsg === object.url" class="options-btn"
                                         @click="toggleMenu(object.url)">⋮</button>
 
                                     <ul v-if="openMenuMsg === object.url" class="options-menu"
                                         @mouseleave="openMenuMsg = null">
                                         <li @click="editMessage(object)">Edit</li>
                                         <li @click="deleteMessage(object)">Delete</li>
-                                    </ul> -->
+                                    </ul>
                                 </li>
                             </ul>
                         </graffiti-discover>

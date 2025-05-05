@@ -1,6 +1,15 @@
 <div class="profile_container">
     <img v-if="loading" src="./svg/loader.svg" alt="Loading" class="loader" />
     <div v-else>
+        <div class="header">
+            <img :src="`./img/${user.picture}.png`" alt="User profile">
+            <div class="information">
+                <h2>{{user.name}}</h2>
+                <span class="handle">@{{getHandle(user.actor)}}</span>
+            </div>
+        </div>
+    </div>
+    <!-- <div v-else>
         <form @submit.prevent="submit" class="profile_form">
             <div class="form_group">
                 <label for="name">Name</label>
@@ -42,5 +51,11 @@
                 <button @click="toggle" class="cancel">Cancel</button>
             </div>
         </form>
-    </div>
+    </div> -->
+    <style>
+        .header {
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
 </div>

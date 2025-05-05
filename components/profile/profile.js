@@ -1,4 +1,4 @@
-import { getUser, updateUser } from "../../user/user_api.js";
+import { getUserById, updateUser } from "../../user/user_api.js";
 import { ANIMALS } from "../../consts.js";
 
 export async function Profile() {
@@ -19,6 +19,13 @@ export async function Profile() {
       }
     },
     methods: {
+      getHandle(actor) {
+        if (actor.includes("id.inru")) {
+          const split = actor.split("/");
+          return split[split.length - 1];
+        }
+        return actor;
+      },
       selectPicture(animal) {
         this.form.picture = animal;
         this.showPicker = false;
@@ -42,7 +49,7 @@ export async function Profile() {
         this.$emit("toggle");
       }
     },
-    props: [],
+    props: ["profileId"],
     emits: ["toggle", "submit"],
     template: await fetch("./components/profile/profile.html")
       .then(r => r.text()),
@@ -51,7 +58,7 @@ export async function Profile() {
         immediate: true,
         async handler() {
           this.loading = true;
-          const user = await getUser(this.$graffiti, this.$graffitiSession);
+          const user = await getUserById(this.$graffiti, this.$graffitiSession, this.profileId);
           this.user = user;
           console.log(user);
           this.loading = false;
