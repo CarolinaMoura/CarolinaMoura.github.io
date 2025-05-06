@@ -23,7 +23,7 @@
             <router-link :to="'/profile/' + this.user.id">
                 <div id="user">
                     <img :src="`img/${user.picture}.png`" alt="User Image" />
-                    <h2>{{$graffitiSession.value.actor}}</h2>
+                    <h2>{{user.name}}</h2>
                 </div>
             </router-link>
             <div id="navbar_buttons">
@@ -52,10 +52,12 @@
     <div id="chat">
         <div v-if="currentConversation" id="actual_chat">
 
-            <div id="chat_header">
-                <img :src="`img/${currentConversation.picture}.png`" alt="User Image" />
-                <h2>{{currentConversation.name}}</h2>
-            </div>
+            <router-link :to="'/profile/' + currentConversation.id">
+                <div id="chat_header">
+                    <img :src="`img/${currentConversation.picture}.png`" alt="User Image" />
+                    <h2>{{currentConversation.name}}</h2>
+                </div>
+            </router-link>
 
             <graffiti-discover autopoll v-slot="{ objects: messageObjects, isInitialPolling }" :channels="getChannel()"
                 @updated="onMessagesUpdated" :schema="{

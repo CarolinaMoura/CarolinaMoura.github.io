@@ -74,7 +74,6 @@ export async function Inbox() {
                 this.friends = friends;
             },
             async changeConversation(friend) {
-                console.log(friend);
                 this.currentConversation = friend;
                 this.currentConversationMessages = this.getMessages(this.currentConversation.id);
                 await this.$nextTick();
@@ -140,7 +139,7 @@ export async function Inbox() {
             this.user = undefined;
 
             this.login().then(async (user) => {
-                this.user = user;
+                this.user = user
                 this.allUsers = await this.wrapper(getAllUsers);
                 this.allMessages = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
                 await this.updateFriendList();
