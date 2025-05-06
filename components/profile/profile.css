@@ -1,7 +1,7 @@
 .profile_container {
     max-width: 480px;
     width: 100%;
-    margin: 1rem auto;
+    margin: 3em auto;
     padding: 1.5rem;
     box-sizing: border-box;
 
@@ -150,4 +150,44 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.profile_container .header {
+    display: flex;
+    flex-direction: row;
+}
+
+.profile_container img {
+    --dim: 3em;
+    width: var(--dim);
+    height: var(--dim);
+}
+
+.profile_container .header .information h2 {
+    margin: 0;
+}
+
+.profile_container .header {
+    gap: 0.5em;
+}
+
+.profile_container .header .information {
+    width: 100%;
+}
+
+.profile_container .no_bio {
+    font-style: italic;
+    color: rgb(51, 50, 50);
+}
+
+
+.profile_container .arrow_left {
+    --dim: 2em;
+    width: var(--dim);
+    height: var(--dim);
+}
+
+.profile_container #edit_button {
+    margin: 0;
+    float: right;
 }

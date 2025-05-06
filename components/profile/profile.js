@@ -1,5 +1,6 @@
-import { getUser, updateUser } from "../../user/user_api.js";
+import { getUserById, updateUser } from "../../user/user_api.js";
 import { ANIMALS } from "../../consts.js";
+import { trim } from "../../utils.js";
 
 export async function Profile() {
   return {
@@ -16,9 +17,31 @@ export async function Profile() {
         },
         showPicker: false,
         animals: ANIMALS,
+        edit: false,
       }
     },
     methods: {
+      resetForm() {
+        this.form.name = this.user.name;
+        this.form.pronouns = this.user.pronouns;
+        this.form.pronounString = this.user.pronouns.join("/");
+        this.form.picture = this.user.picture;
+        this.form.bio = this.user.bio ?? "";
+      },
+      getHandle(actor) {
+        if (actor.includes("id.inru")) {
+          const split = actor.split("/");
+          return split[split.length - 1];
+        }
+        return actor;
+      },
+      cancel() {
+        this.resetForm();
+        this.edit = false;
+      },
+      getPronouns() {
+        return "(" + trim(this.user.pronouns.join('/'), 50) + ")";
+      },
       selectPicture(animal) {
         this.form.picture = animal;
         this.showPicker = false;
@@ -35,15 +58,21 @@ export async function Profile() {
           { op: "replace", path: "/bio", value: this.form.bio },
         ];
 
+        this.loading = true;
         await updateUser(this.$graffiti, this.$graffitiSession, patchOps, this.user.url);
-        this.toggle();
+        await this.updateUser();
+        this.$emit("submit");
+        this.edit = false;
+        this.loading = false;
       },
-      toggle() {
-        this.$emit("toggle");
-      }
+      async updateUser() {
+        const user = await getUserById(this.$graffiti, this.$graffitiSession, this.profileId);
+        this.user = user;
+        this.resetForm();
+      },
     },
-    props: [],
-    emits: ["toggle", "submit"],
+    props: ["profileId"],
+    emits: ["submit"],
     template: await fetch("./components/profile/profile.html")
       .then(r => r.text()),
     watch: {
@@ -51,16 +80,8 @@ export async function Profile() {
         immediate: true,
         async handler() {
           this.loading = true;
-          const user = await getUser(this.$graffiti, this.$graffitiSession);
-          this.user = user;
-          console.log(user);
+          await this.updateUser();
           this.loading = false;
-          this.form.name = user.name;
-          this.form.pronouns = user.pronouns;
-          console.log(user.pronouns);
-          this.form.pronounString = user.pronouns.join("/");
-          this.form.picture = user.picture;
-          this.form.bio = user.bio ?? "";
         }
       }
     }

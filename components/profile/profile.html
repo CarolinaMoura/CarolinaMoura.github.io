@@ -1,46 +1,62 @@
 <div class="profile_container">
     <img v-if="loading" src="./svg/loader.svg" alt="Loading" class="loader" />
     <div v-else>
-        <form @submit.prevent="submit" class="profile_form">
-            <div class="form_group">
-                <label for="name">Name</label>
-                <input id="name" v-model="form.name" type="text" required />
+        <div class="header" v-if="!edit">
+            <router-link to="/"><img src="./svg/arrow_left.svg" class="arrow_left"></router-link>
+            <img :src="`./img/${user.picture}.png`" alt="User profile">
+            <div class="information">
+                <h2>{{user.name}}</h2>
+                <span class="handle">@{{getHandle(user.actor)}}</span>
+                <p>{{getPronouns()}}</p>
+                <p :class="{no_bio: (user.bio ? false : true)}">{{user.bio ? user.bio : "No bio yet."}}</p>
+                <button id="edit_button" @click="() => edit = true" v-if="user.actor === $graffitiSession.value.actor">
+                    Edit ✏️
+                </button>
             </div>
+        </div>
+        <div v-else>
+            <form @submit.prevent="submit" class="profile_form">
+                <div class="form_group">
+                    <label for="name">Name</label>
+                    <input id="name" v-model="form.name" type="text" required />
+                </div>
 
-            <div class="form_group">
-                <label for="pronouns">Pronouns</label>
-                <input id="pronouns" v-model="form.pronounString" type="text" pattern="^[^\/]+(?:\/[^\/]+){1,2}$"
-                    title="Enter 2-3 pronouns separated by slashes (e.g. they/them or she/her/hers)" />
-                <small v-if="pronounsTouched && !pronounsValid" class="error">
-                    Enter 2-3 pronouns separated by slashes (e.g. they/them or she/her/hers).
-                </small>
-            </div>
+                <div class="form_group">
+                    <label for="pronouns">Pronouns</label>
+                    <input id="pronouns" v-model="form.pronounString" type="text" pattern="^[^\/]+(?:\/[^\/]+){1,2}$"
+                        title="Enter 2-3 pronouns separated by slashes (e.g. they/them or she/her/hers)" />
+                    <small v-if="pronounsTouched && !pronounsValid" class="error">
+                        Enter 2-3 pronouns separated by slashes (e.g. they/them or she/her/hers).
+                    </small>
+                </div>
 
-            <div class="form_group picture-group">
-                <label for="picture">Picture</label>
-                <input id="picture" v-model="form.picture" @click="showPicker = !showPicker" readonly />
-                <div v-if="showPicker" class="picture-picker">
-                    <div class="picture-options">
-                        <div :class="{ selected_animal: form.picture === animal }" v-for="animal in animals"
-                            :key="animal"><img :src="`./img/${animal}.png`" @click="selectPicture(animal)"
-                                :alt="animal" />
+                <div class="form_group picture-group">
+                    <label for="picture">Picture</label>
+                    <input id="picture" v-model="form.picture" @click="showPicker = !showPicker" readonly />
+                    <div v-if="showPicker" class="picture-picker">
+                        <div class="picture-options">
+                            <div :class="{ selected_animal: form.picture === animal }" v-for="animal in animals"
+                                :key="animal"><img :src="`./img/${animal}.png`" @click="selectPicture(animal)"
+                                    :alt="animal" />
+                            </div>
+                        </div>
+                        <div class="close-picker-div">
+                            <button class="close-picker" @click="showPicker = false">x</button>
                         </div>
                     </div>
-                    <div class="close-picker-div">
-                        <button class="close-picker" @click="showPicker = false">x</button>
-                    </div>
                 </div>
-            </div>
 
-            <div class="form_group">
-                <label for="bio">Bio</label>
-                <textarea id="bio" v-model="form.bio" rows="4"></textarea>
-            </div>
+                <div class="form_group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" v-model="form.bio" rows="4"></textarea>
+                </div>
 
-            <div class="buttons">
-                <button type="submit">Save</button>
-                <button @click="toggle" class="cancel">Cancel</button>
-            </div>
-        </form>
+                <div class="buttons">
+                    <button type="submit">Save</button>
+                    <button @click="cancel()" type="button" class="cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
+
 </div>

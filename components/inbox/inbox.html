@@ -1,0 +1,109 @@
+<div id="inbox_container">
+    <div v-if=" isLoading" class="black_background">
+        <div id="loader_inner">
+            <h2>Loading...</h2>
+            <img src="svg/loader.svg">
+        </div>
+    </div>
+    <div v-else id="inbox">
+        <div v-if="newChat" class="black_background" @click="newChat=false">
+            <div id="new_chat_inner" @click.stop>
+                <div class="top">
+                    <h2>New Chat</h2>
+                    <button @click="newChat=false">
+                        X</button>
+                </div>
+                <ul>
+                    <button v-for="user in allUsersWithoutMe()" @click="newConversation(user)">{{user.name}}</button>
+                </ul>
+            </div>
+        </div>
+        <div id="navbar">
+
+            <router-link :to="'/profile/' + this.user.id">
+                <div id="user">
+                    <img :src="`img/${user.picture}.png`" alt="User Image" />
+                    <h2>{{user.name}}</h2>
+                </div>
+            </router-link>
+            <div id="navbar_buttons">
+                <button id="new_chat" @click="() => {newChat=true}">
+                    <img src="svg/new_chat.svg" />
+                </button>
+                <button id="logout" @click="logout()">
+                    <img src="svg/logout.svg" />
+                </button>
+            </div>
+        </div>
+
+        <transition-group name="chat" tag="ul" id="chats" class="chat-list">
+            <li v-for="friend in friends" :key="friend.id" class="chat-item">
+                <button @click="changeConversation(friend)"
+                    :class="{active_chat: currentConversation && currentConversation.actor === friend.actor}">
+                    <img :src="`img/${friend.picture}.png`" alt="User Image" />
+                    <div class="name_and_text">
+                        <h2>{{friend.name}}</h2>
+                        <p>{{trim(friend.lastMsg.content, 30)}}</p>
+                    </div>
+                </button>
+            </li>
+        </transition-group>
+    </div>
+    <div id="chat">
+        <div v-if="currentConversation" id="actual_chat">
+
+            <router-link :to="'/profile/' + currentConversation.id">
+                <div id="chat_header">
+                    <img :src="`img/${currentConversation.picture}.png`" alt="User Image" />
+                    <h2>{{currentConversation.name}}</h2>
+                </div>
+            </router-link>
+
+            <graffiti-discover autopoll v-slot="{ objects: messageObjects, isInitialPolling }" :channels="getChannel()"
+                @updated="onMessagesUpdated" :schema="{
+                properties: {
+                    value: {
+                        required: ['content', 'published'],
+                        properties: {
+                            content: { type: 'string' },
+                            published: { type: 'number' }
+                        }
+                    }
+                }
+            }">
+                <ul id="messages" v-scroll-bottom>
+                    <li v-for="object in messageObjects.sort((a,b)=>a.value.published-b.value.published)"
+                        :key="object.url" class="message-bubble"
+                        :class="{ my_message: object.actor === $graffitiSession.value.actor }"
+                        @mouseenter="hoveredMsg = object.url" @mouseleave="hoveredMsg = null">
+
+                        <div class="bubble-content">
+                            {{ object.value.content }}
+                            <span class="message_hour">{{getHour(object.value.published)}}</span>
+                        </div>
+
+                        <button v-if="hoveredMsg === object.url" class="options-btn"
+                            @click="toggleMenu(object.url)">⋮</button>
+
+                        <ul v-if="openMenuMsg === object.url" class="options-menu" @mouseleave="openMenuMsg = null">
+                            <li @click="editMessage(object)">Edit</li>
+                            <li @click="deleteMessage(object)">Delete</li>
+                        </ul>
+                    </li>
+                </ul>
+            </graffiti-discover>
+            <form @submit.prevent="sendMessage()">
+                <fieldset :disabled="sending">
+                    <input type="text" id="message_input" v-model="myMessage" placeholder="Message" ref="messageInput"
+                        v-focus />
+                    <input type="submit" :value="sending? 'Sending...' : 'Send'" />
+                </fieldset>
+            </form>
+
+        </div>
+        <div v-else id="no_conversation">
+            <h2>Click on a conversation to start chatting or on your profile to update it!</h2>
+        </div>
+
+    </div>
+</div>
