@@ -6,6 +6,7 @@ import { defineAsyncComponent } from "vue";
 import { GraffitiPlugin } from "@graffiti-garden/wrapper-vue";
 import { createUser, getAllUsers, getUser } from "./user/user_api.js";
 import { Profile } from "./components/profile/profile.js";
+import { Inbox } from "./components/inbox/inbox.js";
 import { Name } from "./components/name/name.js";
 import { getMessages, sendMessage } from "./message/message_api.js";
 
@@ -14,14 +15,26 @@ function $$(selector) {
   return Array.from(document.querySelectorAll(selector));
 }
 
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
-    { path: "/profile/:profileId", component: Profile, props: true },
-    // { path: "/chat/:chatId", component: Chat, props: true },
-    // { path: "/profile/:profileId", component: Profile, props: true },
+    {
+      path: "/profile/:profileId",
+      component: Profile,
+      props: true,
+    },
+    {
+      path: "/inbox",
+      component: Inbox,
+    },
+    {
+      path: "/",
+      redirect: '/inbox'
+    }
   ],
 });
+
 
 createApp({
   data() {
@@ -73,27 +86,14 @@ createApp({
       this.openMenuMsg = this.openMenuMsg === msgKey ? null : msgKey;
     },
 
-    editMessage(obj) { console.log('edit', obj) },
-    deleteMessage(obj) { console.log('delete', obj) },
-
-    logout() {
-      this.currentConversation = undefined;
-      this.currentConversationMessages = [];
-      this.user = undefined;
-      this.friends = [];
-      this.allMessages = undefined;
-      this.$graffiti.logout(this.$graffitiSession.value);
-    },
+    editMessage(obj) { ('edit', obj) },
+    deleteMessage(obj) { ('delete', obj) },
 
     async updateProfile() {
-      this.profiling = false;
+      ("entrei");
       this.isLoading = true;
       await this.login();
       this.isLoading = false;
-    },
-
-    allUsersWithoutMe() {
-      return this.allUsers.filter((user) => user.actor !== this.user.actor)
     },
 
     async getFriends() {
@@ -113,7 +113,6 @@ createApp({
       const friends = [];
       const seenFriends = new Set();
 
-      console.log("entrei");
 
       for (const msg of allMsgs) {
         const friendId = msg.senderId === this.user.id ? msg.receiverId : msg.senderId;
@@ -142,7 +141,7 @@ createApp({
 
     async getLastText(user) {
       const messages = await this.getMessages(user.id);
-      console.log(messages[0])
+      (messages[0])
       return messages ? undefined : messages[0];
     },
 
@@ -155,10 +154,6 @@ createApp({
       const allUsers = await getAllUsers(this.$graffiti, this.$graffitiSession);
       this.allUsers = allUsers;
       return allUsers;
-    },
-
-    getChannel() {
-      return [`${this.user.id}:${this.currentConversation.id}`, `${this.currentConversation.id}:${this.user.id}`];
     },
 
     /**
@@ -185,6 +180,7 @@ createApp({
       };
 
       await this.wrapper(sendMessage, msgObject);
+      await this.updateFriendList();
 
       this.sending = false;
       this.myMessage = "";
@@ -218,7 +214,7 @@ createApp({
     },
     async login() {
       let user = await getUser(this.$graffiti, this.$graffitiSession);
-      console.log(user, this.profiling);
+      (user, this.profiling);
       if (user) {
         this.user = user;
         return;
@@ -226,6 +222,9 @@ createApp({
       this.user = await createUser(this.$graffiti, this.$graffitiSession);
       this.profiling = true;
     },
+    async updateFriendList() {
+      this.friends = await this.getFriends();
+    }
   },
   mounted() {
     const unwatch = this.$watch('$graffitiSession.value', async (session) => {
@@ -235,7 +234,7 @@ createApp({
 
       await this.login();
       await this.getAllUsers();
-      console.log(this.user);
+      (this.user);
       this.friends = await this.getFriends();
       this.isLoading = false;
     });
@@ -243,8 +242,9 @@ createApp({
     this._messagePoller = setInterval(async () => {
       if (!this.user) return;
       const newAllMessages = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
+      this.allUsers = await this.wrapper(getAllUsers);
       if (!this.allMessages || newAllMessages.length !== this.allMessages.length) {
-        this.friends = await this.getFriends();
+        await this.updateFriendList();
       }
       this.allMessages = newAllMessages;
     }, 1000);
@@ -256,7 +256,8 @@ createApp({
 
   components: {
     Profile: defineAsyncComponent(Profile),
-    Name: defineAsyncComponent(Name)
+    Name: defineAsyncComponent(Name),
+    Inbox: defineAsyncComponent(Inbox)
   }
 
 })

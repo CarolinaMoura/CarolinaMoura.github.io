@@ -155,7 +155,6 @@
 .profile_container .header {
     display: flex;
     flex-direction: row;
-    align-items: center;
 }
 
 .profile_container img {
@@ -166,4 +165,29 @@
 
 .profile_container .header .information h2 {
     margin: 0;
+}
+
+.profile_container .header {
+    gap: 0.5em;
+}
+
+.profile_container .header .information {
+    width: 100%;
+}
+
+.profile_container .no_bio {
+    font-style: italic;
+    color: rgb(51, 50, 50);
+}
+
+
+.profile_container .arrow_left {
+    --dim: 2em;
+    width: var(--dim);
+    height: var(--dim);
+}
+
+.profile_container #edit_button {
+    margin: 0;
+    float: right;
 }
