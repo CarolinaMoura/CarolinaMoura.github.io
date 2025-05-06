@@ -20,6 +20,7 @@ export async function Inbox() {
                 allUsers: [],
                 currentConversation: undefined,
                 friends: [],
+                myMessage: ""
             }
         },
         methods: {
@@ -52,7 +53,6 @@ export async function Inbox() {
 
                 const idToUser = new Map();
                 this.allUsers.forEach((user) => idToUser.set(user.id, user));
-                console.log(idToUser)
 
                 // Retrieve all messages
                 const allMsgs = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
@@ -150,7 +150,6 @@ export async function Inbox() {
                 if (!this.user) return;
                 const newAllMessages = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
                 this.allUsers = await this.wrapper(getAllUsers);
-                console.log(newAllMessages, this.allMessages);
                 if (!this.allMessages || newAllMessages.length !== this.allMessages.length) {
                     await this.updateFriendList();
                 }

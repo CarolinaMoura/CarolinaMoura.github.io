@@ -305,62 +305,6 @@ fieldset {
     background-color: #FEFAE0;
 }
 
-#messages {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    height: calc(100vh - 100px);
-    overflow-y: auto;
-}
-
-#messages li.my_message {
-    align-self: flex-end;
-    background-color: var(--my_bubble);
-
-}
-
-
-#messages li {
-    padding: 0.5em;
-    margin: 0.2em;
-    border-radius: 10px;
-    max-width: 50%;
-    text-wrap: wrap;
-    position: relative;
-    word-break: break-word;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    box-sizing: border-box;
-    background-color: #BBD8A3;
-}
-
-#messages li {
-    position: relative;
-    margin: 0.2em 1em;
-}
-
-#messages li:not(.my_message) .bubble-content:before {
-    content: "";
-    position: absolute;
-    left: -9px;
-    bottom: 0.1px;
-    transform: translateY(-50%);
-    border-right: 10px solid #BBD8A3;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-}
-
-#messages li.my_message .bubble-content:before {
-    content: "";
-    position: absolute;
-    right: -9px;
-    bottom: 0.1px;
-    transform: translateY(-50%);
-    border-left: 10px solid var(--my_bubble);
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-}
 
 .options-btn {
     position: absolute;

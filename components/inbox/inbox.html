@@ -82,13 +82,13 @@
                             <span class="message_hour">{{getHour(object.value.published)}}</span>
                         </div>
 
-                        <button v-if="hoveredMsg === object.url" class="options-btn"
+                        <!-- <button v-if="hoveredMsg === object.url" class="options-btn"
                             @click="toggleMenu(object.url)">⋮</button>
 
                         <ul v-if="openMenuMsg === object.url" class="options-menu" @mouseleave="openMenuMsg = null">
                             <li @click="editMessage(object)">Edit</li>
                             <li @click="deleteMessage(object)">Delete</li>
-                        </ul>
+                        </ul> -->
                     </li>
                 </ul>
             </graffiti-discover>
