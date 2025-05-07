@@ -10,6 +10,48 @@
             <h1>You're not allowed to access this page.</h1>
         </div>
         <div v-else id="actual_chat">
+            <div v-if="newReminder" class="new_reminder">
+                <div class="new_reminder_inner">
+                    <h3>Add reminder</h3>
+                    <form class="reminder_options" @submit.prevent="submitReminder">
+                        <label>
+                            <input type="radio" v-model="reminderTime" name="reminder-time" value="1" checked>
+                            1 hour
+                        </label>
+                        <label>
+                            <input type="radio" v-model="reminderTime" name="reminder-time" value="8">
+                            8 hours
+                        </label>
+                        <label>
+                            <input type="radio" v-model="reminderTime" name="reminder-time" value="24">
+                            1 day
+                        </label>
+                        <label>
+                            <input type="radio" v-model="reminderTime" name="reminder-time" value="168">
+                            1 week
+                        </label>
+                        <label>
+                            <input type="radio" v-model="reminderTime" name="reminder-time" value="custom">
+                            custom
+                        </label>
+
+                        <div class="custom_option" :class="{custom_option_active: reminderTime === 'custom'}">
+                            <input type="number" min="1" step="1" v-model="customNumber">
+                            <select v-model="timeUnit">
+                                <option value="1" selected>minutes</option>
+                                <option value="60">hours</option>
+                                <option value="1440">days</option>
+                                <option value="10080">weeks</option>
+                                <option value="525600">years</option>
+                            </select>
+                        </div>
+                        <div class="buttons">
+                            <button type="submit">Save</button>
+                            <button @click="closeReminder" type="button" class="cancel">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <router-link :to="'/profile/' + friendId">
                 <div id="chat_header">
                     <img :src="`img/${friend.picture}.png`" alt="User Image" />
@@ -33,7 +75,7 @@
                     <li v-for="object in messageObjects.sort((a,b)=>a.value.published-b.value.published)"
                         :key="object.url" class="message-bubble"
                         :class="{ my_message: object.actor === $graffitiSession.value.actor }"
-                        @mouseenter="hoveredMsg = object.url" @mouseleave="handleMouseLeave($event, object.url)">
+                        @mouseenter="hoveredMsg = object.url" @mouseleave="hoveredMsg = null">
 
                         <div class="message-content">
                             <div class="bubble-content">
@@ -41,9 +83,9 @@
                                 <span class="message_hour">{{getHour(object.value.published)}}</span>
                             </div>
 
-                            <button v-if="object.actor !== $graffitiSession.value.actor && hoveredMsg === object.url"
-                                class="reminder" @mouseenter="keepHovered(object.url)"
-                                @click="handleReminder(object)">🔔</button>
+                            <button v-if="object.actor !== $graffitiSession.value.actor"
+                                :class="{active_reminder: hoveredMsg === object.url}" class="reminder"
+                                @click="addReminder(object)">🔔</button>
                         </div>
                     </li>
                 </ul>

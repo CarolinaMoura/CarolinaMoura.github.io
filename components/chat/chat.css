@@ -105,6 +105,7 @@
     gap: 8px;
 }
 
+
 .reminder {
     position: absolute;
     top: 50%;
@@ -115,13 +116,100 @@
     padding: 4px;
     z-index: 1;
     font-size: 1.2em;
-    height: auto;
-    width: auto;
-    display: flex;
+    height: 2em;
+    width: 2em;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    display: flex;
+    transition: opacity 0.2s ease;
+}
+
+.reminder:hover,
+.active_reminder {
+    opacity: 1;
 }
 
 li:not(.my_message) .reminder {
-    right: -2em;
+    right: -2.3em;
+}
+
+.chat_container .new_reminder {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    margin: 0;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat_container .new_reminder_inner {
+    background-color: white;
+    padding-top: 1em;
+    margin-top: -20em;
+    border-radius: 8px;
+}
+
+.chat_container .new_reminder_inner h3 {
+    margin: 0;
+}
+
+.chat_container .reminder:active {
+    border: none;
+
+}
+
+.chat_container #actual_chat .reminder_options {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    background-color: transparent;
+}
+
+.chat_container .custom_option {
+    visibility: hidden;
+    margin-top: 0.5em;
+}
+
+.chat_container .custom_option_active {
+    visibility: visible;
+}
+
+
+.chat_container .buttons button {
+    color: white;
+    padding: 0.48rem 0.96rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.chat_container .profile_form button:hover {
+    filter: brightness(85%);
+}
+
+.chat_container .buttons {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: end;
+    margin-top: 0.3em;
+}
+
+.chat_container button[type="submit"] {
+    background-color: #28a745;
+}
+
+.chat_container .cancel {
+    background-color: #dc3545;
 }

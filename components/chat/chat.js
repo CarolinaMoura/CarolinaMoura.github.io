@@ -6,6 +6,7 @@ export function $$(selector) {
     return Array.from(document.querySelectorAll(selector));
 }
 
+
 export async function Chat() {
     return {
         data() {
@@ -17,6 +18,12 @@ export async function Chat() {
                 myMessage: "",
                 sending: false,
                 hoveredMsg: null,
+                newReminder: false,
+                custom: false,
+                timeUnit: 1,
+                reminderTime: 1,
+                reminderObj: null,
+                customNumber: 1,
             }
         },
         emits: ["updateFriendList"],
@@ -27,20 +34,38 @@ export async function Chat() {
             getChannel() {
                 return [`${this.id1}:${this.id2}`, `${this.id2}:${this.id1}`];
             },
-            handleMouseLeave(event, messageUrl) {
-                // Check if we're moving to the reminder button
-                if (!event.relatedTarget?.classList.contains('reminder')) {
-                    this.hoveredMsg = null;
+            submitReminder() {
+                const time = (this.reminderTime === "custom") ? (parseInt(this.customNumber) * parseInt(this.timeUnit)) : (this.reminderTime * 60);
+                console.log(time);
+                const reminderObj = {
+                    content: this.reminderObj.value.content,
+                    userId: this.user.id,
+                    msgUrl: this.reminderObj.url,
+                    // time: Date.now() + 
                 }
             },
-
-            keepHovered(messageUrl) {
-                this.hoveredMsg = messageUrl;
+            closeReminder() {
+                this.reminderTime = 1;
+                this.timeUnit = 1;
+                this.customNumber = 1;
+                this.newReminder = false;
             },
+            addReminder(msg) {
+                this.newReminder = true;
+                this.reminderObj = msg;
+                const escListener = (evt) => {
+                    if (evt.key !== 'Escape') return;
+                    this.closeReminder();
+                    document.removeEventListener(escListener);
+                };
 
-            handleReminder(message) {
-                // Your reminder logic here
-                console.log('Reminder clicked for message:', message);
+                document.addEventListener("keydown", escListener);
+            },
+            toggleCustom() {
+                // Clean all states
+                this.timeUnit = timeUnitDefault;
+                this.custom = false;
+                this.custom = !this.custom;
             },
             getHour(timestamp) {
                 const date = new Date(timestamp);
