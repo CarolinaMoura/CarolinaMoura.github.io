@@ -166,17 +166,3 @@
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
 }
-
-#inbox_container li.my_message .reminder {
-    order: -1;
-}
-
-#inbox_container li:not(.my_message) .reminder {
-    order: 2;
-}
-
-#inbox_container .reminder {
-    position: absolute;
-    right: -1em;
-    top: 0;
-}

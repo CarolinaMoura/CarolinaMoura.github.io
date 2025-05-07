@@ -44,7 +44,6 @@
     border-radius: 10px;
     border: none;
     box-sizing: border-box;
-    /* background-color: #FFCF50; */
 }
 
 #actual_chat form input[type="submit"] {
@@ -83,4 +82,46 @@
 #actual_chat,
 #chat {
     background-color: #FEFAE0;
+}
+
+.chat_container li.my_message .reminder {
+    order: -1;
+}
+
+.chat_container li:not(.my_message) .reminder {
+    order: 2;
+}
+
+.chat_container .reminder {
+    position: absolute;
+    right: -3em;
+    top: 0;
+}
+
+.message-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reminder {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 1;
+    font-size: 1.2em;
+    height: auto;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+li:not(.my_message) .reminder {
+    right: -2em;
 }

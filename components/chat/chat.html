@@ -33,15 +33,18 @@
                     <li v-for="object in messageObjects.sort((a,b)=>a.value.published-b.value.published)"
                         :key="object.url" class="message-bubble"
                         :class="{ my_message: object.actor === $graffitiSession.value.actor }"
-                        @mouseenter="hoveredMsg = object.url" @mouseleave="hoveredMsg = null">
+                        @mouseenter="hoveredMsg = object.url" @mouseleave="handleMouseLeave($event, object.url)">
 
-                        <div class="bubble-content">
-                            {{ object.value.content }}
-                            <span class="message_hour">{{getHour(object.value.published)}}</span>
+                        <div class="message-content">
+                            <div class="bubble-content">
+                                {{ object.value.content }}
+                                <span class="message_hour">{{getHour(object.value.published)}}</span>
+                            </div>
+
+                            <button v-if="object.actor !== $graffitiSession.value.actor && hoveredMsg === object.url"
+                                class="reminder" @mouseenter="keepHovered(object.url)"
+                                @click="handleReminder(object)">🔔</button>
                         </div>
-
-                        <!-- <button class="reminder">🔔</button> -->
-
                     </li>
                 </ul>
 

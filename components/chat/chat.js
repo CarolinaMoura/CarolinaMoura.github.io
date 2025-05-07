@@ -16,6 +16,7 @@ export async function Chat() {
                 friendId: undefined,
                 myMessage: "",
                 sending: false,
+                hoveredMsg: null,
             }
         },
         emits: ["updateFriendList"],
@@ -25,6 +26,21 @@ export async function Chat() {
         methods: {
             getChannel() {
                 return [`${this.id1}:${this.id2}`, `${this.id2}:${this.id1}`];
+            },
+            handleMouseLeave(event, messageUrl) {
+                // Check if we're moving to the reminder button
+                if (!event.relatedTarget?.classList.contains('reminder')) {
+                    this.hoveredMsg = null;
+                }
+            },
+
+            keepHovered(messageUrl) {
+                this.hoveredMsg = messageUrl;
+            },
+
+            handleReminder(message) {
+                // Your reminder logic here
+                console.log('Reminder clicked for message:', message);
             },
             getHour(timestamp) {
                 const date = new Date(timestamp);
