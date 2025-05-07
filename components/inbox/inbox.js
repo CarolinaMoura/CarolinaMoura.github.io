@@ -75,16 +75,11 @@ export async function Inbox() {
             },
             async changeConversation(friend) {
                 this.currentConversation = friend;
-                this.currentConversationMessages = this.getMessages(this.currentConversation.id);
-                await this.$nextTick();
-                $$("#message_input")[0].focus();
+                this.$router.push(`/inbox/${this.user.id}/${friend.id}`);
             },
             async newConversation(user) {
                 this.newChat = false;
                 await this.changeConversation(user);
-            },
-            getChannel() {
-                return [`${this.user.id}:${this.currentConversation.id}`, `${this.currentConversation.id}:${this.user.id}`];
             },
             async sendMessage() {
                 if (!this.myMessage) return;
@@ -108,13 +103,6 @@ export async function Inbox() {
                 await this.updateFriendList();
                 this.$refs.messageInput.focus();
             },
-            getHour(timestamp) {
-                const date = new Date(timestamp);
-                const hours = date.getHours();
-                let minutes = date.getMinutes();
-                if (minutes < 10) minutes = "0" + minutes;
-                return `${hours}:${minutes}`;
-            },
             trim(content, amount) {
                 return trim(content, amount);
             },
@@ -127,6 +115,9 @@ export async function Inbox() {
                 const ourIds = new Set([friendId, this.user.id]);
                 const ret = this.allMessages.filter((msg) => ourIds.has(msg.senderId) && ourIds.has(msg.receiverId));
                 return ret.sort((msg1, msg2) => msg2.published - msg1.published);
+            },
+            isActiveChat(friend) {
+                return this.$route.params.id2 === friend.id;
             },
 
         },
@@ -155,6 +146,10 @@ export async function Inbox() {
                 }
                 this.allMessages = newAllMessages;
             }, 1000);
+        },
+        watch: {
+            '$route'(to, from) {
+            }
         },
         beforeUnmount() {
             clearInterval(this._messagePoller);

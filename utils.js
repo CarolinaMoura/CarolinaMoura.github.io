@@ -10,3 +10,11 @@ export function trim(str, charAmount) {
     if (str.length <= charAmount) toSum = "";
     return str.slice(0, charAmount) + toSum;
 }
+
+export function wrapper(obj, func, ...args) {
+    return func(obj.$graffiti, obj.$graffitiSession, ...args);
+}
+
+export function $$(document, selector) {
+    return Array.from(document.querySelectorAll(selector));
+}

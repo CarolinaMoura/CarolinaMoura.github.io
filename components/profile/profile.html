@@ -2,7 +2,7 @@
     <img v-if="loading" src="./svg/loader.svg" alt="Loading" class="loader" />
     <div v-else>
         <div class="header" v-if="!edit">
-            <router-link to="/"><img src="./svg/arrow_left.svg" class="arrow_left"></router-link>
+            <a href="#" @click.prevent="$router.go(-1)"><img src="./svg/arrow_left.svg" class="arrow_left"></a>
             <img :src="`./img/${user.picture}.png`" alt="User profile">
             <div class="information">
                 <h2>{{user.name}}</h2>

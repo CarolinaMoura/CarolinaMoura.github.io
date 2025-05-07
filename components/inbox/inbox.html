@@ -49,7 +49,7 @@
             </li>
         </transition-group>
     </div>
-    <div id="chat">
+    <!-- <div id="chat">
         <div v-if="currentConversation" id="actual_chat">
 
             <router-link :to="'/profile/' + currentConversation.id">
@@ -82,13 +82,15 @@
                             <span class="message_hour">{{getHour(object.value.published)}}</span>
                         </div>
 
-                        <!-- <button v-if="hoveredMsg === object.url" class="options-btn"
+                        <button class="reminder">🔔</button>
+
+                        <button v-if="hoveredMsg === object.url" class="options-btn"
                             @click="toggleMenu(object.url)">⋮</button>
 
                         <ul v-if="openMenuMsg === object.url" class="options-menu" @mouseleave="openMenuMsg = null">
                             <li @click="editMessage(object)">Edit</li>
                             <li @click="deleteMessage(object)">Delete</li>
-                        </ul> -->
+                        </ul>
                     </li>
                 </ul>
             </graffiti-discover>
@@ -100,10 +102,11 @@
                 </fieldset>
             </form>
 
-        </div>
-        <div v-else id="no_conversation">
-            <h2>Click on a conversation to start chatting or on your profile to update it!</h2>
-        </div>
+        </div> -->
+    <router-view @update-friend-list="updateFriendList"></router-view>
+    <!-- <div v-else id="no_conversation">
+        <h2>Click on a conversation to start chatting or on your profile to update it!</h2>
+    </div> -->
 
-    </div>
+</div>
 </div>

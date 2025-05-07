@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="./components/profile/profile.css" />
     <link rel="stylesheet" href="./components/inbox/inbox.css" />
+    <link rel="stylesheet" href="./components/chat/chat.css" />
 </head>
 
 <body>
@@ -34,11 +35,7 @@
 
             <router-view v-slot="{ Component }">
                 <component v-if="Component" :is="Component" @submit="updateProfile" v-bind="$attrs" />
-
-
             </router-view>
-
-
         </template>
 
 

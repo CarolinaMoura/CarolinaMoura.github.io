@@ -4,11 +4,10 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import { GraffitiRemote } from "@graffiti-garden/implementation-remote";
 import { defineAsyncComponent } from "vue";
 import { GraffitiPlugin } from "@graffiti-garden/wrapper-vue";
-import { createUser, getAllUsers, getUser } from "./user/user_api.js";
 import { Profile } from "./components/profile/profile.js";
 import { Inbox } from "./components/inbox/inbox.js";
 import { Name } from "./components/name/name.js";
-import { getMessages, sendMessage } from "./message/message_api.js";
+import { Chat } from "./components/chat/chat.js";
 
 
 function $$(selector) {
@@ -27,11 +26,19 @@ const router = createRouter({
     {
       path: "/inbox",
       component: Inbox,
+      children: [
+        {
+          path: ':id1/:id2',
+          component: Chat,
+          props: true
+        }
+      ]
     },
     {
       path: "/",
       redirect: '/inbox'
-    }
+    },
+
   ],
 });
 
@@ -257,7 +264,8 @@ createApp({
   components: {
     Profile: defineAsyncComponent(Profile),
     Name: defineAsyncComponent(Name),
-    Inbox: defineAsyncComponent(Inbox)
+    Inbox: defineAsyncComponent(Inbox),
+    Chat: defineAsyncComponent(Chat)
   }
 
 })
