@@ -6,14 +6,11 @@
 
     --inbox-padding: 1em;
     --my_bubble: #eff0b6;
+    --primary: #A4B465;
+    --secondary: #626f478c;
 
 }
 
-/* body,
-html {
-    min-width: 100vw;
-    min-height: 100vh;
-} */
 
 button:hover {
     cursor: pointer;
@@ -40,14 +37,6 @@ body {
 }
 
 
-button,
-input {
-    margin: 3px;
-}
-
-input[type="text"] {
-    width: 300px;
-}
 
 :checked+input[type="text"] {
     color: gray;
@@ -333,4 +322,45 @@ fieldset {
 
 a {
     text-decoration: none;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+    margin: 5em auto;
+    padding: 0 3em 2em 3em;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.login:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.login button {
+    cursor: pointer;
+    border: 0;
+    border-radius: 4px;
+    font-weight: 600;
+    margin: 0 10px;
+    width: 200px;
+    padding: 10px 0;
+    box-shadow: 0 0 20px rgba(63, 149, 57, 0.2);
+    transition: 0.4s;
+}
+
+
+.login .log {
+    color: green;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid var(--secondary);
+}
+
+.login button:hover {
+    color: white;
+    box-shadow: 0 0 20px var(--secondary);
+    background-color: var(--primary);
 }

@@ -42,7 +42,8 @@ export async function Chat() {
                     userId: this.user.id,
                     msgUrl: this.reminderObj.url,
                     // time: Date.now() + 
-                }
+                };
+                this.closeReminder();
             },
             closeReminder() {
                 this.reminderTime = 1;
@@ -125,6 +126,8 @@ export async function Chat() {
                         if (user.id === this.id1) {
                             this.friendId = this.id2;
                         }
+
+                        console.log("passei");
 
                         wrapper(this, getUserById, this.friendId).then(async (friend) => {
                             this.friend = friend;

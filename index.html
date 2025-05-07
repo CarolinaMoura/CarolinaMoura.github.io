@@ -25,10 +25,10 @@
 
 <body>
     <div id="app">
-        <div v-if="!$graffitiSession.value">
+        <div v-if="!$graffitiSession.value" class="login">
             <h1>DesignFTW Chatroom</h1>
-            <button @click="$graffiti.login()">
-                Log In
+            <button @click="login" id="login_button" class="log">
+                Log in
             </button>
         </div>
         <template v-if="$graffitiSession.value">
@@ -37,8 +37,6 @@
                 <component v-if="Component" :is="Component" @submit="updateProfile" v-bind="$attrs" />
             </router-view>
         </template>
-
-
 
     </div>
     </div>
