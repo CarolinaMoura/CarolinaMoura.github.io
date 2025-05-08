@@ -51,7 +51,8 @@
     </div>
 
 
-    <router-view @update-friend-list="updateFriendList"></router-view>
+
+    <router-view v-if="$route.path !== '/inbox'" @update-friend-list=" updateFriendList"></router-view>
     <div v-else id="no_conversation">
         <h2>Create a new conversation to start chatting!</h2>
     </div>
