@@ -98,8 +98,8 @@ createApp({
 
 })
   .use(GraffitiPlugin, {
-    // graffiti: new GraffitiRemote(),
-    graffiti: new GraffitiLocal(),
+    graffiti: new GraffitiRemote(),
+    // graffiti: new GraffitiLocal(),
     autoLogin: true,
   }).directive('scroll-bottom', {
     // called after the bound element’s children have updated
