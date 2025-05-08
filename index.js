@@ -34,6 +34,10 @@ const router = createRouter({
         }
       ]
     },
+    {
+      path: "/",
+      redirect: "/inbox"
+    }
 
 
   ],
