@@ -41,10 +41,34 @@ const router = createRouter({
 
 
 createApp({
+  data() {
+    return {
+      typewriterText: "Welcome to my chatroom! Log in to start.",
+      isAnimating: false
+    }
+  },
   methods: {
     async login() {
       await this.$graffiti.login();
       this.$router.push("/inbox");
+    },
+    startTypewriter() {
+      const typewriter = $$(".typewriter")[0];
+      if (!typewriter || this.isAnimating) return;
+
+      this.isAnimating = true;
+      typewriter.innerHTML = '';
+
+      let delay = 0, step = 50;
+      for (const char of this.typewriterText) {
+        delay += step;
+        setTimeout(() => {
+          typewriter.innerHTML += char;
+          if (typewriter.innerHTML.length === this.typewriterText.length) {
+            this.isAnimating = false;
+          }
+        }, delay);
+      }
     }
   },
 
@@ -52,8 +76,17 @@ createApp({
 
   },
 
-  beforeUnmount() {
-    // clearInterval(this._messagePoller);
+  watch: {
+    '$graffitiSession.value': {
+      immediate: true,
+      handler(newValue) {
+        if (!newValue) {
+          this.$nextTick(() => {
+            this.startTypewriter();
+          });
+        }
+      }
+    }
   },
 
   components: {

@@ -332,7 +332,7 @@ a {
     flex-direction: column;
     width: 50%;
     margin: 5em auto;
-    padding: 0 3em 2em 3em;
+    padding: 0 3em 1em 3em;
     align-items: center;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -365,4 +365,12 @@ a {
     color: white;
     box-shadow: 0 0 20px var(--secondary);
     background-color: var(--primary);
+}
+
+.typewriter {
+    color: green;
+    margin-top: 2em;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+
 }
