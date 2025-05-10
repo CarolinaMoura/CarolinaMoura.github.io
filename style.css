@@ -156,10 +156,6 @@ fieldset {
     margin: 0;
 }
 
-#chats {
-    /* padding: 0 var(--inbox-padding); */
-}
-
 #chats button {
     display: flex;
     flex-direction: row;
@@ -281,20 +277,6 @@ fieldset {
 }
 
 /* Profile stuff */
-#profile_inner {
-    background-color: white;
-    width: 400px;
-    margin: auto;
-    margin-top: 4em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    padding: 1em;
-    padding-top: 0;
-    box-sizing: border-box;
-}
 
 .name_container img {
     --dim: 2.5em;

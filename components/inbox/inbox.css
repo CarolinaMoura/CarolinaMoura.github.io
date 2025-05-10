@@ -121,7 +121,7 @@
 #inbox_container #messages li.my_message {
     align-self: flex-end;
     background-color: var(--my_bubble);
-
+    text-align: right;
 }
 
 
