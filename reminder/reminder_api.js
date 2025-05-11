@@ -1,4 +1,4 @@
-import { REMINDER_CHANNEL } from "../consts";
+import { REMINDER_CHANNEL } from "../consts.js";
 
 export const IReminder = {
     content: { type: 'string' },

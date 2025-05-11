@@ -55,33 +55,6 @@ fieldset {
     margin: 0;
 }
 
-#logout>* {
-    width: 20px;
-}
-
-#logout {
-    background-color: rgb(240, 53, 53);
-    border: none;
-}
-
-#navbar button {
-    padding: 1em;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    width: 20px;
-    height: 20px;
-}
-
-#navbar_buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5em;
-}
-
-
 #new_chat img {
     width: 20px;
     height: 20px;
@@ -103,21 +76,6 @@ fieldset {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid black;
-}
-
-#navbar button {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-#new_chat {
-    background-color: green;
-    border: none;
-    padding: 0.3em;
-    border-radius: 3px;
-}
-
-#new_chat:hover {
-    cursor: pointer;
 }
 
 #new_chat_inner {

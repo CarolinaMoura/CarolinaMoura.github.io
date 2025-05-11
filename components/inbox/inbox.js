@@ -1,7 +1,8 @@
 import { createUser, getAllUsers, getUser } from "../../user/user_api.js";
 import { getMessages, sendMessage } from "../../message/message_api.js";
 import { Name } from "../name/name.js";
-import { trim } from "../../utils.js";
+import { trim, wrapper } from "../../utils.js";
+import { getTags } from "../../tag/tag_api.js";
 
 function $$(selector) {
     return Array.from(document.querySelectorAll(selector));
@@ -24,6 +25,7 @@ export async function Inbox() {
                 amountReminders: 0,
                 reminderCollapsed: true,
                 messageCollapsed: false,
+                workspace: 0,
             }
         },
         methods: {
@@ -70,7 +72,8 @@ export async function Inbox() {
                     const friendId = msg.senderId === this.user.id ? msg.receiverId : msg.senderId;
                     if (seenFriends.has(friendId)) continue;
                     seenFriends.add(friendId);
-                    friends.push({ ...idToUser.get(friendId), lastMsg: msg });
+                    const tag = await wrapper(this, getTags, this.user.id, friendId);
+                    friends.push({ ...idToUser.get(friendId), lastMsg: msg, tags: [tag.personal, tag.work] });
                 }
 
                 friends.sort((a, b) => b.lastMsg.published - a.lastMsg.published);

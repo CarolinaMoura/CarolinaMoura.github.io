@@ -27,15 +27,22 @@
                 </div>
             </router-link>
             <div id="navbar_buttons">
-                <button id="new_chat" @click="() => {newChat=true}">
+                <button id="work" v-if="workspace === 0" @click="workspace = 1" class="tooltip" data-tooltip="See work">
+                    <img src="svg/briefcase.svg" />
+                </button>
+                <button id="personal" v-if="workspace === 1" @click="workspace = 0" class="tooltip"
+                    data-tooltip="See personal">
+                    <img src="svg/house.svg" />
+                </button>
+                <button id="new_chat" @click="() => {newChat=true}" class="tooltip" data-tooltip="New chat">
                     <img src="svg/new_chat.svg" />
                 </button>
-                <button id="logout" @click="logout()">
+                <button id="logout" @click="logout()" class="tooltip" data-tooltip="Log out">
                     <img src="svg/logout.svg" />
                 </button>
             </div>
         </div>
-
+        <!-- <h3>Viewing {{workspace === 0 ? "Personal" : "Work"}}</h3> -->
         <div class="collapsable">
             <span class="collapsable_title" :class="{collapsed: reminderCollapsed}"
                 @click="reminderCollapsed = !reminderCollapsed">Reminders <span
@@ -53,7 +60,8 @@
             <div class="chat-list-wrapper" :class="{collapsed: messageCollapsed}">
                 <transition-group name="chat" tag="ul" id="chats" class="chat-list"
                     :class="{collapsed: messageCollapsed}">
-                    <li v-for="friend in friends" :key="friend.id" class="chat-item">
+                    <li v-for="friend in friends.filter(friend => friend.tags[workspace])" :key="friend.id"
+                        class="chat-item">
                         <button @click="changeConversation(friend)"
                             :class="{active_chat: currentConversation && currentConversation.actor === friend.actor}">
                             <img :src="`img/${friend.picture}.png`" alt="User Image" />

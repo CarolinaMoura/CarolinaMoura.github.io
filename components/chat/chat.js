@@ -1,6 +1,7 @@
 import { getUser, getUserById } from "../../user/user_api.js";
 import { getMessages, sendMessage } from "../../message/message_api.js";
 import { wrapper } from "../../utils.js";
+import { getTags, updateTag } from "../../tag/tag_api.js";
 
 export function $$(selector) {
     return Array.from(document.querySelectorAll(selector));
@@ -24,6 +25,12 @@ export async function Chat() {
                 reminderTime: 1,
                 reminderObj: null,
                 customNumber: 1,
+                manageTags: false,
+                personal: true,
+                work: false,
+                personalEdit: false,
+                workEdit: false,
+                tagUrl: null
             }
         },
         emits: ["updateFriendList"],
@@ -33,6 +40,33 @@ export async function Chat() {
         methods: {
             getChannel() {
                 return [`${this.id1}:${this.id2}`, `${this.id2}:${this.id1}`];
+            },
+            closeManageTags() {
+                this.manageTags = false;
+                this.personalEdit = this.personal;
+                this.workEdit = this.work;
+            },
+            openManageTags() {
+                this.personalEdit = this.personal;
+                this.workEdit = this.work;
+                this.manageTags = true;
+
+                const escListener = (evt) => {
+                    if (evt.key !== 'Escape') return;
+                    this.closeManageTags();
+                    document.removeEventListener(escListener);
+                };
+
+                document.addEventListener("keydown", escListener);
+            },
+            async submitTags() {
+                this.isLoading = true;
+                await wrapper(this, updateTag, this.personalEdit, this.workEdit, this.tagUrl);
+                this.personal = this.personalEdit;
+                this.work = this.workEdit;
+                this.isLoading = false;
+                this.manageTags = false;
+                this.$emit("updateFriendList");
             },
             submitReminder() {
                 const time = (this.reminderTime === "custom") ? (parseInt(this.customNumber) * parseInt(this.timeUnit)) : (this.reminderTime * 60);
@@ -127,7 +161,6 @@ export async function Chat() {
                             this.friendId = this.id2;
                         }
 
-                        console.log("passei");
 
                         wrapper(this, getUserById, this.friendId).then(async (friend) => {
                             this.friend = friend;
@@ -137,6 +170,12 @@ export async function Chat() {
                                     this.$refs.messageInput.focus();
                                 }
                             });
+                        });
+
+                        wrapper(this, getTags, this.user.id, this.friendId).then((tag) => {
+                            this.work = tag.work;
+                            this.personal = tag.personal;
+                            this.tagUrl = tag.url;
                         });
                     });
                 }

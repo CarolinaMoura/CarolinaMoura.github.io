@@ -10,8 +10,27 @@
             <h1>You're not allowed to access this page.</h1>
         </div>
         <div v-else id="actual_chat">
-            <div v-if="newReminder" class="new_reminder">
-                <div class="new_reminder_inner">
+            <div v-if="manageTags" class="blur_background">
+                <form class="blur_background_inner manage_tags_list" @submit.prevent="submitTags">
+                    <h3>Manage tags</h3>
+                    <div class="tags">
+                        <div>
+                            <label for="personal">Personal</label>
+                            <input type="checkbox" :checked="personalEdit" name="personal" v-model="personalEdit">
+                        </div>
+                        <div>
+                            <label for="work">Work</label>
+                            <input type="checkbox" :checked="workEdit" name="work" v-model="workEdit">
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="submit" :disabled="!workEdit && !personalEdit">Save</button>
+                        <button @click="closeManageTags" type="button" class="cancel">Cancel</button>
+                    </div>
+                </form>
+            </div>
+            <div v-if="newReminder" class="blur_background">
+                <div class="blur_background_inner">
                     <h3>Add reminder</h3>
                     <form class="reminder_options" @submit.prevent="submitReminder">
                         <label>
@@ -52,12 +71,15 @@
                     </form>
                 </div>
             </div>
-            <router-link :to="'/profile/' + friendId">
-                <div id="chat_header">
+            <div id="chat_header">
+                <router-link :to="'/profile/' + friendId" id="chat_header_profile">
                     <img :src="`img/${friend.picture}.png`" alt="User Image" />
                     <h2>{{friend.name}}</h2>
-                </div>
-            </router-link>
+                </router-link>
+                <button id="manage_tags" @click="openManageTags()">
+                    Manage tags <img src="../../svg/tag.svg" />
+                </button>
+            </div>
 
             <graffiti-discover autopoll v-slot="{ objects: messageObjects, isInitialPolling }" :channels="getChannel()"
                 @updated="onMessagesUpdated" :schema="{
@@ -93,7 +115,7 @@
 
             </graffiti-discover>
 
-            <form @submit.prevent="sendMessage()">
+            <form @submit.prevent="sendMessage()" id="message_bar">
                 <fieldset :disabled="sending">
                     <input type="text" id="message_input" v-model="myMessage" placeholder="Message" ref="messageInput"
                         v-focus />

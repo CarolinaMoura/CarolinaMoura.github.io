@@ -30,19 +30,19 @@
     justify-content: end;
 }
 
-#actual_chat form {
+#actual_chat #message_bar {
     background-color: #FFCF50;
     padding: 1em;
 }
 
-#actual_chat form {
+#actual_chat #message_bar {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
-#actual_chat form input[type="text"] {
+#actual_chat #message_bar input[type="text"] {
     padding: 0.5em;
     width: 80%;
     border-radius: 10px;
@@ -50,7 +50,7 @@
     box-sizing: border-box;
 }
 
-#actual_chat form input[type="submit"] {
+#actual_chat #message_bar input[type="submit"] {
     padding: 0.5em;
     width: 10%;
     border-radius: 5px;
@@ -67,18 +67,45 @@
 #chat_header {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     background-color: #BF9264;
     gap: 0.5em;
     padding: 0.2em;
     padding-left: 0.4em;
+    min-height: 2em;
+}
+
+#manage_tags {
+    border-radius: 5px;
+    border: none;
+    margin: auto 1em;
+    background-color: rgb(0, 191, 255);
+    color: white;
+    -webkit-text-stroke: 0.2px black;
+    padding: 0.3em;
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+
+}
+
+#inbox_container #manage_tags img {
+    width: 1em;
+    height: 1em;
 }
 
 #chat_header h2 {
     margin: 0;
     font-size: 1.2em;
     color: rgb(224, 221, 221);
+}
+
+#chat_header_profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
 }
 
 #actual_chat,
@@ -159,12 +186,12 @@ li:not(.my_message) .reminder {
     background-color: #BBD8A3;
 }
 
-.chat_container .new_reminder {
+.chat_container .blur_background {
     width: 100%;
     height: 100%;
     position: absolute;
     background: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
+    z-index: 999;
     margin: 0;
     top: 0;
     left: 0;
@@ -174,14 +201,14 @@ li:not(.my_message) .reminder {
     align-items: center;
 }
 
-.chat_container .new_reminder_inner {
+.chat_container .blur_background_inner {
     background-color: white;
     padding-top: 1em;
     margin-top: -20em;
     border-radius: 8px;
 }
 
-.chat_container .new_reminder_inner h3 {
+.chat_container .blur_background_inner h3 {
     margin: 0;
 }
 
@@ -264,4 +291,25 @@ li:not(.my_message) .reminder {
     border-right: 10px solid #BBD8A3;
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
+}
+
+.manage_tags_list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1em;
+    background: none;
+    gap: 1em;
+}
+
+.manage_tags_list .tags {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+button:disabled,
+button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
