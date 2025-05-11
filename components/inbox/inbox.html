@@ -46,22 +46,25 @@
             </transition-group>
         </div>
 
-        <div class="collapsable">
+        <div class="collapsable messages-section">
             <span class="collapsable_title" :class="{collapsed: messageCollapsed}"
                 @click="messageCollapsed = !messageCollapsed">Messages</span>
 
-            <transition-group name="chat" tag="ul" id="chats" class="chat-list" :class="{collapsed: messageCollapsed}">
-                <li v-for="friend in friends" :key="friend.id" class="chat-item">
-                    <button @click="changeConversation(friend)"
-                        :class="{active_chat: currentConversation && currentConversation.actor === friend.actor}">
-                        <img :src="`img/${friend.picture}.png`" alt="User Image" />
-                        <div class="name_and_text">
-                            <h2>{{friend.name}}</h2>
-                            <p>{{trim(friend.lastMsg.content, 30)}}</p>
-                        </div>
-                    </button>
-                </li>
-            </transition-group>
+            <div class="chat-list-wrapper" :class="{collapsed: messageCollapsed}">
+                <transition-group name="chat" tag="ul" id="chats" class="chat-list"
+                    :class="{collapsed: messageCollapsed}">
+                    <li v-for="friend in friends" :key="friend.id" class="chat-item">
+                        <button @click="changeConversation(friend)"
+                            :class="{active_chat: currentConversation && currentConversation.actor === friend.actor}">
+                            <img :src="`img/${friend.picture}.png`" alt="User Image" />
+                            <div class="name_and_text">
+                                <h2>{{friend.name}}</h2>
+                                <p>{{trim(friend.lastMsg.content, 30)}}</p>
+                            </div>
+                        </button>
+                    </li>
+                </transition-group>
+            </div>
         </div>
     </div>
 

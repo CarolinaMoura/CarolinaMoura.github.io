@@ -239,7 +239,10 @@ li:not(.my_message) .reminder {
     background-color: #dc3545;
 }
 
-
+.bubble-content {
+    display: flex;
+    flex-direction: row;
+}
 
 #messages li.my_message .bubble-content:before {
     content: "";
