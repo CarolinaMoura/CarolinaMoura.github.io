@@ -86,6 +86,7 @@ export async function Chat() {
                 this.$emit("createdReminder");
                 this.closeReminder();
                 this.isLoading = false;
+                setTimeout(() => alert("Reminder added!"), 500);
             },
             closeReminder() {
                 this.reminderTime = 1;

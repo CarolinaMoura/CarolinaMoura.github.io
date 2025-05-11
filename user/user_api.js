@@ -34,8 +34,6 @@ export async function getAllUsers(graffiti, graffitiSession, channel = USER_CHAN
 
     };
 
-    console.log("All users: ", users);
-
 
     return users;
 }

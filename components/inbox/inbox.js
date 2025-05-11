@@ -60,7 +60,6 @@ export async function Inbox() {
 
                 const idToUser = new Map();
                 this.allUsers.forEach((user) => idToUser.set(user.id, user));
-                console.log(this.allUsers)
                 // Retrieve all messages
                 const allMsgs = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
                 // Sort them from most recent to least recent
@@ -69,21 +68,16 @@ export async function Inbox() {
                 const friends = [];
                 const seenFriends = new Set();
 
-                console.log(idToUser);
-
                 for (const msg of allMsgs) {
                     const friendId = msg.senderId === this.user.id ? msg.receiverId : msg.senderId;
                     if (seenFriends.has(friendId)) continue;
                     seenFriends.add(friendId);
-                    console.log(friendId);
                     const tag = await wrapper(this, getTags, this.user.id, friendId);
                     friends.push({ ...idToUser.get(friendId), lastMsg: msg, tags: [tag.personal, tag.work] });
                 }
 
                 friends.sort((a, b) => b.lastMsg.published - a.lastMsg.published);
                 this.friends = friends;
-
-                console.log(this.friends);
             },
             async changeConversation(friend) {
                 this.currentConversation = friend;
@@ -161,7 +155,7 @@ export async function Inbox() {
                 this.doneReminders.push(reminderObj);
             },
             async clickedDoneReminder(clickedReminder) {
-                this.doneReminders = this.doneReminders.filter((reminder) => reminder.id === clickedReminder.id);
+                this.doneReminders = this.doneReminders.filter((reminder) => reminder.url !== clickedReminder.url);
                 this.$router.push(`/inbox/${this.user.id}/${clickedReminder.friendId}`);
                 await wrapper(this, deleteReminder, clickedReminder.url)
                 await this.fetchReminders();
