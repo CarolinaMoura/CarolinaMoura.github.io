@@ -43,7 +43,7 @@ export async function createUser(graffiti, graffitiSession) {
         {
             value: {
                 name: formatNameFromActor(graffitiSession.value.actor),
-                pronouns: ["they", "them"],
+                pronouns: [],
                 describes: graffitiSession.value.actor,
                 generator: "https://carolinamoura.github.io/",
                 id: crypto.randomUUID(),
