@@ -8,6 +8,7 @@ import { Profile } from "./components/profile/profile.js";
 import { Inbox } from "./components/inbox/inbox.js";
 import { Name } from "./components/name/name.js";
 import { Chat } from "./components/chat/chat.js";
+import { APP_NAME } from "./consts.js";
 
 
 function $$(selector) {
@@ -48,7 +49,8 @@ createApp({
   data() {
     return {
       typewriterText: "Welcome to my chatroom! Log in to start.",
-      isAnimating: false
+      isAnimating: false,
+      appName: APP_NAME
     }
   },
   methods: {
@@ -77,6 +79,7 @@ createApp({
   },
 
   mounted() {
+    document.title = this.appName;
 
   },
 
@@ -102,8 +105,8 @@ createApp({
 
 })
   .use(GraffitiPlugin, {
-    graffiti: new GraffitiRemote(),
-    // graffiti: new GraffitiLocal(),
+    // graffiti: new GraffitiRemote(),
+    graffiti: new GraffitiLocal(),
     autoLogin: true,
   }).directive('scroll-bottom', {
     // called after the bound element’s children have updated

@@ -20,7 +20,10 @@ export async function Inbox() {
                 allUsers: [],
                 currentConversation: undefined,
                 friends: [],
-                myMessage: ""
+                myMessage: "",
+                amountReminders: 0,
+                reminderCollapsed: true,
+                messageCollapsed: false,
             }
         },
         methods: {

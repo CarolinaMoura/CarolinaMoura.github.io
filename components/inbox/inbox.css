@@ -84,18 +84,6 @@
     opacity: 0;
 }
 
-#inbox_container #chat_header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: #BF9264;
-    gap: 0.5em;
-    padding: 0.2em;
-    padding-left: 0.4em;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
 
 #inbox_container #chat_header h2 {
     margin: 0;
@@ -145,24 +133,55 @@
     margin: 0.2em 1em;
 }
 
-#inbox_container #messages li:not(.my_message) .bubble-content:before {
-    content: "";
-    position: absolute;
-    left: -9px;
-    bottom: 0.1px;
-    transform: translateY(-50%);
-    border-right: 10px solid #BBD8A3;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
+#inbox_container .collapsable_title {
+    background-color: #136208;
+    color: rgb(168, 166, 166);
+    display: flex;
+    padding: 0.3em;
 }
 
-#inbox_container #messages li.my_message .bubble-content:before {
-    content: "";
-    position: absolute;
-    right: -9px;
-    bottom: 0.1px;
-    transform: translateY(-50%);
-    border-left: 10px solid var(--my_bubble);
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
+.collapsable_title:not(:last-child) {
+    border-bottom: 1px solid black;
+}
+
+#inbox_container .collapsable:hover {
+    cursor: pointer;
+}
+
+#inbox_container .collapsable_title.collapsed::before {
+    content: url('../../svg/caret-down.svg');
+}
+
+#inbox_container .collapsable_title::before {
+    content: url('../../svg/caret-up.svg');
+}
+
+#chats.collapsed {
+    display: none;
+}
+
+#reminders_list {
+    margin: 0;
+}
+
+#reminders_list.collapsed {
+    display: none;
+}
+
+#inbox_container .collapsable_title {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.2em;
+    font-weight: bold;
+}
+
+.amount_reminders {
+    border-radius: 50%;
+    background-color: rgb(106, 105, 105);
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    text-align: center;
+    line-height: 24px;
 }

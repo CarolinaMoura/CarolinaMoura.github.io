@@ -260,12 +260,6 @@ fieldset {
     background: #f0f0f0;
 }
 
-
-.bubble-content {
-    display: flex;
-    flex-direction: row;
-}
-
 .message_hour {
     display: flex;
     align-items: flex-end;

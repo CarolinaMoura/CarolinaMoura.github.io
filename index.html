@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Designftw Chatroom</title>
+    <title>Chatroom</title>
 
     <script type="importmap">
             {
@@ -26,11 +26,11 @@
 <body>
     <div id="app">
         <div v-if="!$graffitiSession.value" class="login">
-            <h1>DesignFTW Chatroom</h1>
+            <h1>{{appName}}</h1>
             <button @click="login" id="login_button" class="log">
                 Log in
             </button>
-            <p class="typewriter">Welcome to my chatroom! Log in to start.</p>
+            <p class="typewriter"></p>
         </div>
         <template v-if="$graffitiSession.value">
 

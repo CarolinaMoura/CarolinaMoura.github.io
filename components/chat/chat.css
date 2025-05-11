@@ -1,3 +1,7 @@
+* {
+    --my_bubble: #eff0b6;
+}
+
 #chat {
     margin: auto;
     text-align: center;
@@ -69,8 +73,6 @@
     gap: 0.5em;
     padding: 0.2em;
     padding-left: 0.4em;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 #chat_header h2 {
@@ -235,4 +237,28 @@ li:not(.my_message) .reminder {
 
 .chat_container .cancel {
     background-color: #dc3545;
+}
+
+
+
+#messages li.my_message .bubble-content:before {
+    content: "";
+    position: absolute;
+    right: -9px;
+    bottom: 0.1px;
+    transform: translateY(-50%);
+    border-left: 10px solid var(--my_bubble);
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+#messages li:not(.my_message) .bubble-content:before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    bottom: 0.1px;
+    transform: translateY(-50%);
+    border-right: 10px solid #BBD8A3;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
 }
