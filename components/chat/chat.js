@@ -1,7 +1,8 @@
 import { getUser, getUserById } from "../../user/user_api.js";
 import { getMessages, sendMessage } from "../../message/message_api.js";
 import { wrapper } from "../../utils.js";
-import { getTags, updateTag } from "../../tag/tag_api.js";
+import { createTag, getTags, updateTag } from "../../tag/tag_api.js";
+import { createReminder } from "../../reminder/reminder_api.js";
 
 export function $$(selector) {
     return Array.from(document.querySelectorAll(selector));
@@ -33,7 +34,7 @@ export async function Chat() {
                 tagUrl: null
             }
         },
-        emits: ["updateFriendList"],
+        emits: ["updateFriendList", "createdReminder"],
         props: ["id1", "id2"],
         template: await fetch("./components/chat/chat.html")
             .then(r => r.text()),
@@ -68,16 +69,23 @@ export async function Chat() {
                 this.manageTags = false;
                 this.$emit("updateFriendList");
             },
-            submitReminder() {
+            minutesToMiliseconds(minutes) {
+                return minutes * 60000;
+            },
+            async submitReminder() {
                 const time = (this.reminderTime === "custom") ? (parseInt(this.customNumber) * parseInt(this.timeUnit)) : (this.reminderTime * 60);
-                console.log(time);
                 const reminderObj = {
                     content: this.reminderObj.value.content,
                     userId: this.user.id,
+                    friendId: this.friend.id,
                     msgUrl: this.reminderObj.url,
-                    // time: Date.now() + 
+                    time: Date.now() + this.minutesToMiliseconds(time)
                 };
+                this.isLoading = true;
+                await wrapper(this, createReminder, reminderObj);
+                this.$emit("createdReminder");
                 this.closeReminder();
+                this.isLoading = false;
             },
             closeReminder() {
                 this.reminderTime = 1;

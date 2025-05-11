@@ -46,10 +46,13 @@
         <div class="collapsable">
             <span class="collapsable_title" :class="{collapsed: reminderCollapsed}"
                 @click="reminderCollapsed = !reminderCollapsed">Reminders <span
-                    class="amount_reminders">{{amountReminders}}
+                    class="amount_reminders">{{doneReminders.length}}
                 </span></span>
             <transition-group name="reminders" :class="{collapsed: reminderCollapsed}" tag="ul" id="reminders_list">
-
+                <li v-for="doneReminder of doneReminders" @click="clickedDoneReminder(doneReminder)"
+                    :key="doneReminder.id">
+                    {{doneReminder.content}}
+                </li>
             </transition-group>
         </div>
 
@@ -78,7 +81,8 @@
 
 
 
-    <router-view v-if="$route.path !== '/inbox'" @update-friend-list=" updateFriendList"></router-view>
+    <router-view v-if="$route.path !== '/inbox'" @update-friend-list="updateFriendList"
+        @created-reminder="fetchReminders"></router-view>
     <div v-else id="no_conversation">
         <h2>Create a new conversation to start chatting!</h2>
     </div>

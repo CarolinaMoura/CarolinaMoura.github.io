@@ -2,7 +2,7 @@ import { USER_CHANNEL, ANIMALS } from "../consts.js";
 
 export async function getAllUsers(graffiti, graffitiSession, channel = USER_CHANNEL) {
     const asyncGenerator = await graffiti.discover(
-        channel,
+        [channel],
         {
             properties: {
                 name: { type: 'string' },
@@ -51,7 +51,7 @@ export async function createUser(graffiti, graffitiSession) {
                 picture: randomAnimal(),
                 bio: "",
             },
-            channels: USER_CHANNEL
+            channels: [USER_CHANNEL]
         },
         graffitiSession.value,
     );

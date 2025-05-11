@@ -3,6 +3,7 @@ import { getMessages, sendMessage } from "../../message/message_api.js";
 import { Name } from "../name/name.js";
 import { trim, wrapper } from "../../utils.js";
 import { getTags } from "../../tag/tag_api.js";
+import { deleteReminder, getReminders } from "../../reminder/reminder_api.js";
 
 function $$(selector) {
     return Array.from(document.querySelectorAll(selector));
@@ -22,10 +23,11 @@ export async function Inbox() {
                 currentConversation: undefined,
                 friends: [],
                 myMessage: "",
-                amountReminders: 0,
                 reminderCollapsed: true,
                 messageCollapsed: false,
                 workspace: 0,
+                allReminders: [],
+                doneReminders: []
             }
         },
         methods: {
@@ -67,7 +69,6 @@ export async function Inbox() {
                 const friends = [];
                 const seenFriends = new Set();
 
-
                 for (const msg of allMsgs) {
                     const friendId = msg.senderId === this.user.id ? msg.receiverId : msg.senderId;
                     if (seenFriends.has(friendId)) continue;
@@ -78,6 +79,8 @@ export async function Inbox() {
 
                 friends.sort((a, b) => b.lastMsg.published - a.lastMsg.published);
                 this.friends = friends;
+
+                console.log(this.friends);
             },
             async changeConversation(friend) {
                 this.currentConversation = friend;
@@ -125,6 +128,37 @@ export async function Inbox() {
             isActiveChat(friend) {
                 return this.$route.params.id2 === friend.id;
             },
+            deadlinePassed(reminder) {
+                this.doneReminders.push(reminder);
+            },
+            async clickedDoneReminder(clickedReminder) {
+                this.isLoading = true;
+                await wrapper(this, deleteReminder, clickedReminder.url)
+                await this.fetchReminders();
+                this.isLoading = false;
+                this.$router.push(`/inbox/${this.user.id}/${clickedReminder.friendId}`);
+            },
+            async fetchReminders() {
+                const reminders = await wrapper(this, getReminders, this.user.id)
+                this.allReminders = reminders;
+                this.doneReminders = [];
+                console.log("was called");
+
+                // Separate in deadline passed or deadline hasn't passed
+                const rightNow = Date.now();
+                this.allReminders.forEach((reminder) => {
+                    // If deadline hasn't passed, add timeout
+                    if (reminder.time > rightNow) {
+                        console.log("waiting for ", reminder.time - rightNow, " miliseconds");
+                        setTimeout(() => {
+                            console.log("entrei");
+                            this.deadlinePassed(reminder);
+                        }, reminder.time - rightNow);
+                    }
+                    // If deadline has passed, include it in the deadline passed list
+                    else this.deadlinePassed(reminder);
+                });
+            }
 
         },
         props: [],
@@ -140,7 +174,7 @@ export async function Inbox() {
                 this.allUsers = await this.wrapper(getAllUsers);
                 this.allMessages = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
                 await this.updateFriendList();
-                this.isLoading = false;
+                this.fetchReminders().then(() => this.isLoading = false);
             });
 
             this._messagePoller = setInterval(async () => {
@@ -151,11 +185,12 @@ export async function Inbox() {
                     await this.updateFriendList();
                 }
                 this.allMessages = newAllMessages;
+
+
             }, 1000);
         },
         watch: {
-            '$route'(to, from) {
-            }
+
         },
         beforeUnmount() {
             clearInterval(this._messagePoller);

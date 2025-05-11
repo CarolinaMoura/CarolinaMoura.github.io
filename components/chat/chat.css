@@ -203,13 +203,14 @@ li:not(.my_message) .reminder {
 
 .chat_container .blur_background_inner {
     background-color: white;
-    padding-top: 1em;
+    padding: 1em;
     margin-top: -20em;
     border-radius: 8px;
 }
 
 .chat_container .blur_background_inner h3 {
     margin: 0;
+    margin-bottom: 0.5em;
 }
 
 .chat_container .reminder:active {
