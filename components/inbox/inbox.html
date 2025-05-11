@@ -50,8 +50,18 @@
                 </span></span>
             <transition-group name="reminders" :class="{collapsed: reminderCollapsed}" tag="ul" id="reminders_list">
                 <li v-for="doneReminder of doneReminders" @click="clickedDoneReminder(doneReminder)"
-                    :key="doneReminder.id">
-                    {{doneReminder.content}}
+                    :key="doneReminder.id" class="reminder-item">
+                    <div class="content_and_arrow">
+                        <span class="content">{{trim(doneReminder.content, 35)}}</span>
+                        <img src="../../svg/arrow-bend-double-up-right.svg" />
+                    </div>
+                    <div class="friend_and_time_string">
+                        <span class="reminder_profile">
+                            <img :src="`./img/${doneReminder.friend.picture}.png`" />
+                            <span class="name">{{trim(doneReminder.friend.name, 10)}}</span>
+                        </span>
+                        <span class="time_string">{{doneReminder.timeString}}</span>
+                    </div>
                 </li>
             </transition-group>
         </div>

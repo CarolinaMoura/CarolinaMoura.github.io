@@ -110,17 +110,22 @@
     position: relative;
 }
 
-#inbox_container .chat-move {
+#inbox_container .chat-move,
+.reminders-move {
     transition: transform 0.4s ease;
 }
 
 #inbox_container .chat-enter-active,
-#inbox_container .chat-leave-active {
+#inbox_container .chat-leave-active,
+.reminders-leave-active,
+.reminders-enter-active {
     transition: opacity 0.3s ease;
 }
 
 #inbox_container .chat-enter-from,
-#inbox_container .chat-leave-to {
+#inbox_container .chat-leave-to,
+.reminders-enter-from,
+.reminders-leave-to {
     opacity: 0;
 }
 
@@ -180,7 +185,7 @@
 
 #inbox_container .collapsable_title {
     background-color: #136208;
-    color: rgb(168, 166, 166);
+    color: rgb(200, 200, 200);
     display: flex;
     padding: 0.3em;
 }
@@ -191,6 +196,11 @@
 
 #inbox_container .collapsable:hover {
     cursor: pointer;
+}
+
+#inbox_container .collapsable_title.collapsed {
+    color: rgb(168, 166, 166);
+
 }
 
 #inbox_container .collapsable_title.collapsed::before {
@@ -272,4 +282,54 @@ button.tooltip::after {
 
 button.tooltip:hover::after {
     opacity: 0.8;
+}
+
+#inbox_container .reminder-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0.8em;
+    gap: 0.3em;
+}
+
+#inbox_container .reminder-item:not(:last-child) {
+    border-bottom: 0.1px solid rgba(0, 0, 0, 0.125);
+}
+
+#inbox_container .content_and_arrow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1em;
+    color: var(--text_primary);
+}
+
+#inbox_container .reminder_profile img {
+    --img_dim: 1em;
+    width: var(--img_dim);
+    height: var(--img_dim);
+}
+
+#inbox_container .reminder_profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.2em;
+    color: white;
+    -webkit-text-stroke: 0.3px black;
+
+}
+
+#inbox_container .friend_and_time_string {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 0.8em;
+}
+
+#inbox_container .time_string {
+    color: rgb(103, 102, 102);
+    font-weight: bold;
+    font-size: 0.8em;
 }

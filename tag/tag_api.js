@@ -11,8 +11,6 @@ export async function updateTag(graffiti, graffitiSession, personal, work, tagUr
         { op: "replace", path: "/personal", value: personal },
     ];
 
-    console.log(patchOps);
-
     await graffiti.patch(
         {
             value: patchOps,
