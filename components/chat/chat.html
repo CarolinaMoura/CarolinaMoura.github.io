@@ -10,6 +10,11 @@
             <h1>You're not allowed to access this page.</h1>
         </div>
         <div v-else id="actual_chat">
+            <div v-if="calendar" class="blur_background" @click="closeCalendar()">
+                <div class="blur_background_inner calendar_list">
+
+                </div>
+            </div>
             <div v-if="manageTags" class="blur_background" @click="closeManageTags()">
                 <form class="blur_background_inner manage_tags_list" @submit.prevent="submitTags" @click.stop>
                     <h3>Manage tags</h3>
@@ -116,6 +121,9 @@
             </graffiti-discover>
 
             <form @submit.prevent="sendMessage()" id="message_bar">
+                <button id="calendar" @click="openCalendar()" type="button">
+                    <img src="../../svg/calendar-dots.svg" />
+                </button>
                 <fieldset :disabled="sending">
                     <input type="text" id="message_input" v-model="myMessage" placeholder="Message" ref="messageInput"
                         v-focus />

@@ -1,8 +1,8 @@
-import { getUser, getUserById } from "../../user/user_api.js";
-import { getMessages, sendMessage } from "../../message/message_api.js";
+import { getUser, getUserById } from "../../api/user/user_api.js";
+import { getMessages, sendMessage } from "../../api/message/message_api.js";
 import { wrapper } from "../../utils.js";
-import { createTag, getTags, updateTag } from "../../tag/tag_api.js";
-import { createReminder } from "../../reminder/reminder_api.js";
+import { createTag, getTags, updateTag } from "../../api/tag/tag_api.js";
+import { createReminder } from "../../api/reminder/reminder_api.js";
 
 export function $$(selector) {
     return Array.from(document.querySelectorAll(selector));
@@ -31,7 +31,8 @@ export async function Chat() {
                 work: false,
                 personalEdit: false,
                 workEdit: false,
-                tagUrl: null
+                tagUrl: null,
+                calendar: false
             }
         },
         emits: ["updateFriendList", "createdReminder"],
@@ -140,6 +141,14 @@ export async function Chat() {
                 this.$emit("updateFriendList");
                 this.$refs.messageInput.focus();
             },
+
+            // ------------ Calendar stuff ------------
+            closeCalendar() {
+                this.calendar = false;
+            },
+            openCalendar() {
+                this.calendar = true;
+            }
         },
         computed: {
             chatIds() {

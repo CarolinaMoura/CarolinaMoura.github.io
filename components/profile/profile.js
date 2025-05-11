@@ -1,4 +1,4 @@
-import { getUserById, updateUser } from "../../user/user_api.js";
+import { getUserById, updateUser } from "../../api/user/user_api.js";
 import { ANIMALS } from "../../consts.js";
 import { trim } from "../../utils.js";
 

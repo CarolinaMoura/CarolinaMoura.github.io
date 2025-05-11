@@ -1,9 +1,9 @@
-import { createUser, getAllUsers, getUser, getUserById } from "../../user/user_api.js";
-import { getMessages, sendMessage } from "../../message/message_api.js";
+import { createUser, getAllUsers, getUser, getUserById } from "../../api/user/user_api.js";
+import { getMessages, sendMessage } from "../../api/message/message_api.js";
 import { Name } from "../name/name.js";
 import { trim, wrapper } from "../../utils.js";
-import { getTags } from "../../tag/tag_api.js";
-import { deleteReminder, getReminders } from "../../reminder/reminder_api.js";
+import { getTags } from "../../api/tag/tag_api.js";
+import { deleteReminder, getReminders } from "../../api/reminder/reminder_api.js";
 
 function $$(selector) {
     return Array.from(document.querySelectorAll(selector));

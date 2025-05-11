@@ -1,4 +1,4 @@
-import { USER_CHANNEL, ANIMALS } from "../consts.js";
+import { USER_CHANNEL, ANIMALS } from "../../consts.js";
 
 export async function getAllUsers(graffiti, graffitiSession, channel = USER_CHANNEL) {
     const asyncGenerator = await graffiti.discover(

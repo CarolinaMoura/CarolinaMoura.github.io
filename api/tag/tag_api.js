@@ -1,4 +1,4 @@
-import { TAG_CHANNEL } from "../consts.js";
+import { TAG_CHANNEL } from "../../consts.js";
 
 export const ITag = {
     work: { type: 'boolean' },
