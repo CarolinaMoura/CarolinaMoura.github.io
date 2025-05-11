@@ -10,8 +10,8 @@
             <h1>You're not allowed to access this page.</h1>
         </div>
         <div v-else id="actual_chat">
-            <div v-if="manageTags" class="blur_background">
-                <form class="blur_background_inner manage_tags_list" @submit.prevent="submitTags">
+            <div v-if="manageTags" class="blur_background" @click="closeManageTags()">
+                <form class="blur_background_inner manage_tags_list" @submit.prevent="submitTags" @click.stop>
                     <h3>Manage tags</h3>
                     <div class="tags">
                         <div>
@@ -29,8 +29,8 @@
                     </div>
                 </form>
             </div>
-            <div v-if="newReminder" class="blur_background">
-                <div class="blur_background_inner">
+            <div v-if="newReminder" class="blur_background" @click="closeReminder()">
+                <div class="blur_background_inner" @click.stop>
                     <h3>Add reminder</h3>
                     <form class="reminder_options" @submit.prevent="submitReminder">
                         <label>
