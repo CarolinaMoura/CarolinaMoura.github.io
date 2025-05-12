@@ -7,7 +7,7 @@
             <div class="information">
                 <h2>{{user.name}}</h2>
                 <span class="handle">@{{getHandle(user.actor)}}</span>
-                <p>{{getPronouns()}}</p>
+                <p :class="{no_bio: ( (user.pronouns.length > 0) ? false : true)}">{{getPronouns()}}</p>
                 <p :class="{no_bio: (user.bio ? false : true)}">{{user.bio ? user.bio : "No bio yet."}}</p>
                 <button id="edit_button" @click="() => edit = true" v-if="user.actor === $graffitiSession.value.actor">
                     Edit ✏️

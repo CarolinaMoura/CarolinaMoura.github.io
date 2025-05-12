@@ -199,6 +199,7 @@ export async function Inbox() {
 
             this._messagePoller = setInterval(async () => {
                 if (!this.user) return;
+
                 const newAllMessages = await getMessages(this.$graffiti, this.$graffitiSession, this.user.id);
                 this.allUsers = await this.wrapper(getAllUsers);
                 if (!this.allMessages || newAllMessages.length !== this.allMessages.length) {

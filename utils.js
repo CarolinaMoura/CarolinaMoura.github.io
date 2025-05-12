@@ -18,3 +18,9 @@ export function wrapper(obj, func, ...args) {
 export function $$(document, selector) {
     return Array.from(document.querySelectorAll(selector));
 }
+
+export async function deleteObj(graffiti, graffitiSession, objUrl) {
+    await graffiti.delete(
+        objUrl, graffitiSession.value
+    );
+}

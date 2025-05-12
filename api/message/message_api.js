@@ -1,4 +1,10 @@
-import { IMessage } from "./IMessage.js";
+export const IMessage = {
+    content: { type: 'string' },
+    published: { type: 'number' },
+    senderId: { type: 'string' },
+    receiverId: { type: 'string' }
+}
+
 
 /**
  * Returns all the messages to and from userId.

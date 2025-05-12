@@ -1,8 +1,9 @@
 import { getUser, getUserById } from "../../api/user/user_api.js";
 import { getMessages, sendMessage } from "../../api/message/message_api.js";
-import { wrapper } from "../../utils.js";
+import { trim, wrapper } from "../../utils.js";
 import { createTag, getTags, updateTag } from "../../api/tag/tag_api.js";
 import { createReminder } from "../../api/reminder/reminder_api.js";
+import { createScheduled, deleteScheduled, getScheduled } from "../../api/scheduled/scheduled_api.js";
 
 export function $$(selector) {
     return Array.from(document.querySelectorAll(selector));
@@ -32,7 +33,11 @@ export async function Chat() {
                 personalEdit: false,
                 workEdit: false,
                 tagUrl: null,
-                calendar: false
+                calendar: false,
+                newScheduled: false,
+                scheduledDate: null,
+                scheduledMessage: "",
+                scheduled: []
             }
         },
         emits: ["updateFriendList", "createdReminder"],
@@ -141,13 +146,72 @@ export async function Chat() {
                 this.$emit("updateFriendList");
                 this.$refs.messageInput.focus();
             },
+            trim(str, char) {
+                return trim(str, char);
+            },
+
 
             // ------------ Calendar stuff ------------
             closeCalendar() {
                 this.calendar = false;
+                this.newScheduled = false;
             },
             openCalendar() {
                 this.calendar = true;
+            },
+            clickNew() {
+                this.newScheduled = true;
+                this.scheduledMessage = "";
+                // Get date right now +1 hour
+                this.scheduledDate = this.getLocalTimestamp(1);
+            },
+            getLocalTimestamp(plusHours) {
+                const now = new Date();
+                now.setHours(now.getHours() + plusHours);
+                const pad = (n) => String(n).padStart(2, '0');
+
+                const YYYY = now.getFullYear();
+                const MM = pad(now.getMonth() + 1);
+                const DD = pad(now.getDate());
+                const hh = pad(now.getHours());
+                const mm = pad(now.getMinutes());
+
+                return `${YYYY}-${MM}-${DD}T${hh}:${mm}`;
+            },
+            convertFromLocalTimestamp(timeString) {
+                return new Date(timeString).getTime();
+            },
+            async submitScheduled() {
+                const scheduledObj = {
+                    time: this.convertFromLocalTimestamp(this.scheduledDate),
+                    senderId: this.user.id,
+                    receiverId: this.friend.id,
+                    content: this.scheduledMessage
+                };
+                this.isLoading = true;
+                await wrapper(this, createScheduled, scheduledObj);
+                this.getScheduled();
+                this.isLoading = false;
+                this.closeCalendar();
+                setTimeout(() => alert("Message scheduled!"), 500);
+            },
+            async getScheduled() {
+                const allScheduled = await wrapper(this, getScheduled);
+                this.scheduled = allScheduled.filter((msg) => msg.senderId === this.user.id);
+            },
+            formatCalendardDate(milliseconds) {
+                const date = new Date(milliseconds);
+                const month = date.toLocaleString('default', { month: 'short' });
+                const day = date.getDate();
+                const year = date.getFullYear();
+                const hours = date.getHours();
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                return `${month} ${day}, ${year} at ${hours}:${minutes}`;
+            },
+            async deleteScheduled(msg) {
+                this.isLoading = true;
+                await wrapper(this, deleteScheduled, msg.url);
+                this.isLoading = false;
             }
         },
         computed: {
@@ -164,38 +228,39 @@ export async function Chat() {
                 async handler() {
                     this.isLoading = true;
                     this.notAllowedError = false;
-                    wrapper(this, getUser).then((user) => {
-                        this.user = user;
+                    this.user = await wrapper(this, getUser);
 
+                    if (![this.id1, this.id2].includes(this.user.id)) {
+                        this.notAllowedError = true;
+                        return;
+                    }
 
-                        if (![this.id1, this.id2].includes(user.id)) {
-                            this.notAllowedError = true;
-                            return;
-                        }
+                    this.friendId = this.id1;
 
-                        this.friendId = this.id1;
+                    if (this.user.id === this.id1) {
+                        this.friendId = this.id2;
+                    }
 
-                        if (user.id === this.id1) {
-                            this.friendId = this.id2;
-                        }
+                    this.friend = await wrapper(this, getUserById, this.friendId)
 
-
-                        wrapper(this, getUserById, this.friendId).then(async (friend) => {
-                            this.friend = friend;
-                            this.isLoading = false;
-                            this.$nextTick().then(() => {
-                                if (this.$refs.messageInput) {
-                                    this.$refs.messageInput.focus();
-                                }
-                            });
-                        });
-
-                        wrapper(this, getTags, this.user.id, this.friendId).then((tag) => {
-                            this.work = tag.work;
-                            this.personal = tag.personal;
-                            this.tagUrl = tag.url;
-                        });
+                    await wrapper(this, getTags, this.user.id, this.friendId).then((tag) => {
+                        this.work = tag.work;
+                        this.personal = tag.personal;
+                        this.tagUrl = tag.url;
                     });
+
+                    await this.getScheduled();
+
+                    this.isLoading = false;
+
+                    this.$nextTick().then(() => {
+                        if (this.$refs.messageInput) {
+                            this.$refs.messageInput.focus();
+                        }
+                    });
+
+
+
                 }
             }
         }

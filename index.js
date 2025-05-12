@@ -9,6 +9,9 @@ import { Inbox } from "./components/inbox/inbox.js";
 import { Name } from "./components/name/name.js";
 import { Chat } from "./components/chat/chat.js";
 import { APP_NAME } from "./consts.js";
+import { deleteScheduled, getScheduled } from "./api/scheduled/scheduled_api.js";
+import { wrapper } from "./utils.js";
+import { sendMessage } from "./api/message/message_api.js";
 
 
 function $$(selector) {
@@ -81,6 +84,20 @@ createApp({
   mounted() {
     document.title = this.appName;
 
+    this._schedulerPoller = setInterval(async () => {
+      const scheduledMessages = await wrapper(this, getScheduled);
+      scheduledMessages.forEach(async (msg) => {
+        if (msg.time > Date.now()) return;
+        await wrapper(this, sendMessage, {
+          content: msg.content,
+          senderId: msg.senderId,
+          receiverId: msg.receiverId,
+          published: msg.time
+        });
+        await wrapper(this, deleteScheduled, msg.url);
+      });
+
+    }, 1000);
   },
 
   watch: {

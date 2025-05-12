@@ -10,8 +10,42 @@
             <h1>You're not allowed to access this page.</h1>
         </div>
         <div v-else id="actual_chat">
-            <div v-if="calendar" class="blur_background" @click="closeCalendar()">
+            <div v-if="calendar" class="blur_background">
                 <div class="blur_background_inner calendar_list">
+                    <h3>Scheduled messages</h3>
+
+                    <div v-if="newScheduled">
+                        <form @submit.prevent="submitScheduled" class="newScheduleForm">
+                            <div class="inputs">
+                                <div class="datetime-picker">
+                                    <input ref="schedInput" type="datetime-local" v-model="scheduledDate" required>
+                                </div>
+                                <div class="message-input">
+                                    <input type="text" v-model="scheduledMessage" placeholder="Message" required>
+                                </div>
+                            </div>
+                            <div class="buttons">
+                                <button type="submit">Schedule</button>
+                                <button type="button" class="cancel" @click="closeCalendar">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div v-else>
+                        <ul class="scheduled_messages">
+                            <li v-for="msg of scheduled" class="scheduled_message">
+                                <div class="content_and_time">
+                                    <span class="content">"{{trim(msg.content, 30)}}"</span>
+                                    <span class="time">For {{formatCalendardDate(msg.time)}}</span>
+                                </div>
+                                <button class="trash_can" @click="deleteScheduled(msg)"><img
+                                        src="../../svg/trash.svg" /></button>
+                            </li>
+                        </ul>
+                        <div class="buttons">
+                            <button type="button" class="green" @click="clickNew">New</button>
+                            <button type="button" class="cancel" @click="closeCalendar">Close</button>
+                        </div>
+                    </div>
 
                 </div>
             </div>

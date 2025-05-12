@@ -252,7 +252,8 @@ li:not(.my_message) .reminder {
     margin-top: 0.3em;
 }
 
-.chat_container button[type="submit"] {
+.chat_container button[type="submit"],
+.chat_container button.green {
     background-color: #28a745;
 }
 
@@ -336,4 +337,54 @@ button[disabled] {
     justify-content: center;
     width: var(--dim);
     height: var(--dim);
+}
+
+.newScheduleForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.5em;
+}
+
+.newScheduleForm .inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+
+.newScheduleForm .inputs>* {
+    display: flex;
+    flex-direction: column;
+}
+
+.scheduled_messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.scheduled_message {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.2em;
+}
+
+.scheduled_message .content_and_time {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.scheduled_message .content_and_time .time {
+    font-size: 0.8em;
+    color: grey;
+}
+
+.trash_can {
+    background: none;
+    border: none;
 }

@@ -40,6 +40,8 @@ export async function Profile() {
         this.edit = false;
       },
       getPronouns() {
+        console.log(this.user.pronouns)
+        if (this.user.pronouns.length === 0) return "No pronouns yet.";
         return "(" + trim(this.user.pronouns.join('/'), 50) + ")";
       },
       selectPicture(animal) {
@@ -48,7 +50,7 @@ export async function Profile() {
       },
       async submit() {
 
-        this.form.pronouns = this.form.pronounString.split("/");
+        this.form.pronouns = this.form.pronounString ? this.form.pronounString.split("/") : [];
 
         this.form.pronouns = this.form.pronouns.map((pronoun) => pronoun.trim());
         const patchOps = [
