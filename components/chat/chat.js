@@ -211,6 +211,7 @@ export async function Chat() {
             async deleteScheduled(msg) {
                 this.isLoading = true;
                 await wrapper(this, deleteScheduled, msg.url);
+                await this.getScheduled();
                 this.isLoading = false;
             }
         },
