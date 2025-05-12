@@ -123,8 +123,8 @@ createApp({
 
 })
   .use(GraffitiPlugin, {
-    graffiti: new GraffitiRemote(),
-    // graffiti: new GraffitiLocal(),
+    // graffiti: new GraffitiRemote(),
+    graffiti: new GraffitiLocal(),
     autoLogin: true,
   }).directive('scroll-bottom', {
     mounted(el) {
@@ -133,7 +133,7 @@ createApp({
     },
     updated(el) {
       console.log(el.scrollHeight, el.previousHeight, el.hasScrolled);
-      if (!el.hasScrolled || (el.previousHeight + 100 < el.scrollHeight)) {
+      if (!el.hasScrolled || (el.previousHeight < el.scrollHeight)) {
         el.scrollTop = el.scrollHeight;
         el.previousHeight = el.scrollHeight;
         el.hasScrolled = true;
