@@ -37,7 +37,8 @@ export async function Chat() {
                 newScheduled: false,
                 scheduledDate: null,
                 scheduledMessage: "",
-                scheduled: []
+                scheduled: [],
+                qtty: 0
             }
         },
         emits: ["updateFriendList", "createdReminder"],
@@ -123,6 +124,15 @@ export async function Chat() {
                 let minutes = date.getMinutes();
                 if (minutes < 10) minutes = "0" + minutes;
                 return `${hours}:${minutes}`;
+            },
+            measureQtt(msgs) {
+                const newLength = msgs.length;
+                if (newLength > this.qtty) {
+                    const allMsgs = document.querySelector("#messages");
+                    allMsgs.scrollTop = allMsgs.scrollHeight + 1000;
+                    this.qtty = newLength;
+                }
+                return msgs;
             },
             async sendMessage() {
                 if (!this.myMessage) return;

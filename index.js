@@ -132,8 +132,10 @@ createApp({
       el.previousHeight = el.scrollHeight;
     },
     updated(el) {
-      if (!el.hasScrolled || (el.previousHeight !== el.scrollHeight)) {
+      console.log(el.scrollHeight, el.previousHeight, el.hasScrolled);
+      if (!el.hasScrolled || (el.previousHeight + 100 < el.scrollHeight)) {
         el.scrollTop = el.scrollHeight;
+        el.previousHeight = el.scrollHeight;
         el.hasScrolled = true;
       }
     }
