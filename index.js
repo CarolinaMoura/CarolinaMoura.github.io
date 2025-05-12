@@ -128,9 +128,10 @@ createApp({
   }).directive('scroll-bottom', {
     mounted(el) {
       el.hasScolled = false;
+      el.previousHeight = el.scrollHeight;
     },
     updated(el) {
-      if (!el.hasScrolled) {
+      if (!el.hasScrolled || (el.previousHeight !== el.scrollHeight)) {
         el.scrollTop = el.scrollHeight;
         el.hasScrolled = true;
       }
