@@ -124,16 +124,6 @@ export async function Chat() {
                 if (minutes < 10) minutes = "0" + minutes;
                 return `${hours}:${minutes}`;
             },
-            preprocess(messages) {
-                const seenIds = new Set();
-                const messageReturn = [];
-                for (const msg of messages) {
-                    if (seenIds.has(msg.value.id)) continue;
-                    seenIds.add(msg.value.id);
-                    messageReturn.push(msg);
-                }
-                return messageReturn;
-            },
             async sendMessage() {
                 if (!this.myMessage) return;
 
