@@ -144,7 +144,12 @@ export async function Chat() {
                 // Refocus the input field after sending the message
                 await this.$nextTick();
                 this.$emit("updateFriendList");
+
                 this.$refs.messageInput.focus();
+
+                const messages = document.querySelector("#messages");
+                messages.hasScrolled = false;
+
             },
             trim(str, char) {
                 return trim(str, char);

@@ -156,6 +156,11 @@ li:not(.my_message) .reminder {
     right: -2.3em;
 }
 
+#messages {
+    width: 100%;
+    overflow-x: hidden;
+}
+
 #messages li:not(.my_message) {
     text-align: left;
 }

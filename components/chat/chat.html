@@ -133,7 +133,7 @@
                 }
             }
         }">
-                <ul id="messages" v-scroll-bottom>
+                <ul id="messages" v-scroll-bottom ref="messages">
                     <li v-for="object in messageObjects.sort((a,b)=>a.value.published-b.value.published)"
                         :key="object.url" class="message-bubble"
                         :class="{ my_message:  object.value.senderId === user.id }"
