@@ -3,4 +3,4 @@ export const REMINDER_CHANNEL = '013c7b6b-3616-4115-ba2a-0dcf97619925';
 export const TAG_CHANNEL = '0f774059-bf9f-4ecd-9bb5-67a67fa3b16a';
 export const SCHEDULED_CHANNEL = '0f774059-bf9f-4ecd-9ba5-67a57fa3b26a';
 export const APP_NAME = "iZoo";
-export const ANIMALS = ["cat", "chicken", "panda", "rabbit", "koala", "sea-lion", "giraffe", "puffer-fish", "penguin", "sloth", "dragon", "dog", "hen", "weasel"];
+export const ANIMALS = ["cat", "chicken", "panda", "rabbit", "koala", "sea-lion", "giraffe", "puffer-fish", "penguin", "sloth", "dragon", "dog", "hen", "weasel", "cow", "lion", "hippopotamus"];
