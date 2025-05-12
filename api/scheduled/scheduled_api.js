@@ -22,12 +22,12 @@ export async function createScheduled(graffiti, graffitiSession, scheduledObj) {
         {
             value: {
                 ...scheduledObj,
-                id: crypto.randomUUID()
             },
             channels: [SCHEDULED_CHANNEL]
         },
         graffitiSession.value,
     );
+
 }
 
 export async function deleteScheduled(graffiti, graffitiSession, objUrl) {

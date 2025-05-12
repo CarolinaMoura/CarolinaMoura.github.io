@@ -143,7 +143,8 @@ export async function Chat() {
                     content: this.myMessage,
                     published: Date.now(),
                     senderId: this.user.id,
-                    receiverId: this.friend.id
+                    receiverId: this.friend.id,
+                    id: crypto.randomUUID()
                 };
 
                 await wrapper(this, sendMessage, msgObject);
@@ -201,7 +202,8 @@ export async function Chat() {
                     time: this.convertFromLocalTimestamp(this.scheduledDate),
                     senderId: this.user.id,
                     receiverId: this.friend.id,
-                    content: this.scheduledMessage
+                    content: this.scheduledMessage,
+                    id: crypto.randomUUID()
                 };
                 this.isLoading = true;
                 await wrapper(this, createScheduled, scheduledObj);

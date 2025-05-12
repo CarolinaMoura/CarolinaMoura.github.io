@@ -97,6 +97,7 @@ export async function Inbox() {
                     published: Date.now(),
                     senderId: this.user.id,
                     receiverId: this.currentConversation.id,
+                    id: crypto.randomUUID()
                 };
 
                 await this.wrapper(sendMessage, msgObject);

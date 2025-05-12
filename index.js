@@ -92,7 +92,8 @@ createApp({
           content: msg.content,
           senderId: msg.senderId,
           receiverId: msg.receiverId,
-          published: msg.time
+          published: msg.time,
+          id: msg.id,
         });
         await wrapper(this, deleteScheduled, msg.url);
       });

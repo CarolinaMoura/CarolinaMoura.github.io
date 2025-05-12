@@ -35,10 +35,7 @@ export async function getMessages(graffiti, graffitiSession, userId) {
 export async function sendMessage(graffiti, graffitiSession, msgObject) {
     await graffiti.put(
         {
-            value: {
-                ...msgObject,
-                id: crypto.randomUUID()
-            },
+            value: msgObject,
             channels: [`${msgObject.senderId}:${msgObject.receiverId}`, `${msgObject.receiverId}:${msgObject.senderId}`,
             `${msgObject.senderId}`, `${msgObject.receiverId}`]
         },
