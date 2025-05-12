@@ -123,8 +123,8 @@ createApp({
 
 })
   .use(GraffitiPlugin, {
-    // graffiti: new GraffitiRemote(),
-    graffiti: new GraffitiLocal(),
+    graffiti: new GraffitiRemote(),
+    // graffiti: new GraffitiLocal(),
     autoLogin: true,
   }).directive('scroll-bottom', {
     mounted(el) {
