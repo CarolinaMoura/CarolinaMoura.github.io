@@ -32,7 +32,7 @@
                     </div>
                     <div v-else>
                         <ul class="scheduled_messages">
-                            <li v-for="msg of scheduled" class="scheduled_message">
+                            <li v-if="scheduled.length > 0" v-for="msg of scheduled" class="scheduled_message">
                                 <div class="content_and_time">
                                     <span class="content">"{{trim(msg.content, 30)}}"</span>
                                     <span class="time">For {{formatCalendardDate(msg.time)}}</span>
@@ -40,6 +40,7 @@
                                 <button class="trash_can" @click="deleteScheduled(msg)"><img
                                         src="../../svg/trash.svg" /></button>
                             </li>
+                            <p v-else class="no">No scheduled texts yet.</p>
                         </ul>
                         <div class="buttons">
                             <button type="button" class="green" @click="clickNew">New</button>

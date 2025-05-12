@@ -388,3 +388,9 @@ button[disabled] {
     background: none;
     border: none;
 }
+
+.no {
+    color: grey;
+    font-size: 0.8em;
+    font-style: italic;
+}
