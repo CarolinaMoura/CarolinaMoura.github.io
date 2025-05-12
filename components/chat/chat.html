@@ -125,16 +125,13 @@
                 @updated="onMessagesUpdated" :schema="{
             properties: {
                 value: {
-                    required: ['content', 'published'],
-                    properties: {
-                        content: { type: 'string' },
-                        published: { type: 'number' }
-                    }
+                    properties: IMessage
                 }
             }
         }">
+                <!-- {{messageObjects}} -->
                 <ul id="messages" v-scroll-bottom ref="messages">
-                    <li v-for="object in messageObjects.sort((a,b)=>a.value.published-b.value.published)"
+                    <li v-for="object in preprocess(messageObjects).sort((a,b)=>a.value.published-b.value.published)"
                         :key="object.url" class="message-bubble"
                         :class="{ my_message:  object.value.senderId === user.id }"
                         @mouseenter="hoveredMsg = object.url" @mouseleave="hoveredMsg = null">

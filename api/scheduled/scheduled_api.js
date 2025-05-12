@@ -5,6 +5,7 @@ export const IScheduled = {
     content: { type: 'string' },
     senderId: { type: 'string' },
     receiverId: { type: 'string' },
+    id: { type: 'string' },
     time: { type: 'number' }
 }
 
@@ -19,7 +20,10 @@ function deletedScheduledChannel() {
 export async function createScheduled(graffiti, graffitiSession, scheduledObj) {
     await graffiti.put(
         {
-            value: scheduledObj,
+            value: {
+                ...scheduledObj,
+                id: crypto.randomUUID()
+            },
             channels: [SCHEDULED_CHANNEL]
         },
         graffitiSession.value,

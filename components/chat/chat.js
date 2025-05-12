@@ -1,5 +1,5 @@
 import { getUser, getUserById } from "../../api/user/user_api.js";
-import { getMessages, sendMessage } from "../../api/message/message_api.js";
+import { getMessages, sendMessage, IMessage } from "../../api/message/message_api.js";
 import { trim, wrapper } from "../../utils.js";
 import { createTag, getTags, updateTag } from "../../api/tag/tag_api.js";
 import { createReminder } from "../../api/reminder/reminder_api.js";
@@ -123,6 +123,16 @@ export async function Chat() {
                 let minutes = date.getMinutes();
                 if (minutes < 10) minutes = "0" + minutes;
                 return `${hours}:${minutes}`;
+            },
+            preprocess(messages) {
+                const seenIds = new Set();
+                const messageReturn = [];
+                for (const msg of messages) {
+                    if (seenIds.has(msg.value.id)) continue;
+                    seenIds.add(msg.value.id);
+                    messageReturn.push(msg);
+                }
+                return messageReturn;
             },
             async sendMessage() {
                 if (!this.myMessage) return;

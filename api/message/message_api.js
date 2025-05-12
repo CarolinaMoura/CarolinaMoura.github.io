@@ -2,7 +2,8 @@ export const IMessage = {
     content: { type: 'string' },
     published: { type: 'number' },
     senderId: { type: 'string' },
-    receiverId: { type: 'string' }
+    receiverId: { type: 'string' },
+    id: { type: 'string' }
 }
 
 
@@ -34,7 +35,10 @@ export async function getMessages(graffiti, graffitiSession, userId) {
 export async function sendMessage(graffiti, graffitiSession, msgObject) {
     await graffiti.put(
         {
-            value: msgObject,
+            value: {
+                ...msgObject,
+                id: crypto.randomUUID()
+            },
             channels: [`${msgObject.senderId}:${msgObject.receiverId}`, `${msgObject.receiverId}:${msgObject.senderId}`,
             `${msgObject.senderId}`, `${msgObject.receiverId}`]
         },
