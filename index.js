@@ -126,9 +126,14 @@ createApp({
     graffiti: new GraffitiLocal(),
     autoLogin: true,
   }).directive('scroll-bottom', {
-    // called after the bound element’s children have updated
+    mounted(el) {
+      el.hasScolled = false;
+    },
     updated(el) {
-      el.scrollTop = el.scrollHeight;
+      if (!el.hasScrolled) {
+        el.scrollTop = el.scrollHeight;
+        el.hasScrolled = true;
+      }
     }
   }).use(router)
   .mount("#app");
